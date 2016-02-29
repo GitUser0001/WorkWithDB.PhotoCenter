@@ -63,6 +63,20 @@
     <None Include="packages.config" />
     <None Include="PhotoCenter.snk" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WorkWithDB.DAL.Abstract\WorkWithDB.DAL.Abstract.csproj">
+      <Project>{445bb82a-f082-40ac-8da6-3feb7e4361de}</Project>
+      <Name>WorkWithDB.DAL.Abstract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkWithDB.DAL.Entity\WorkWithDB.DAL.Entity.csproj">
+      <Project>{4c3c0b31-0a21-4e39-9f3a-5c896cd39de8}</Project>
+      <Name>WorkWithDB.DAL.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkWithDB.DAL.PostgreSQL\WorkWithDB.DAL.PostgreSQL.csproj">
+      <Project>{5645d5be-6f6c-43de-8737-145179f89ddd}</Project>
+      <Name>WorkWithDB.DAL.PostgreSQL</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
