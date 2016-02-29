@@ -16,6 +16,7 @@ namespace WorkWithDB.Test
             {
                 var listOfGoods = scope.GoodsRepository.GetAll();
 
+                Console.WriteLine("Elements in Goods table = " + listOfGoods.Count + "\n");
                 int i = 0;
 
                 foreach (var goods in listOfGoods)
