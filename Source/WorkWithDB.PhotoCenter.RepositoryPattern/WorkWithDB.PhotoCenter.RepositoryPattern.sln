@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkWithDB.UI", "WorkWithDB.UI\WorkWithDB.UI.csproj", "{808D4365-BDBE-4812-80D6-7F3ED4787701}"
+	ProjectSection(ProjectDependencies) = postProject
+		{445BB82A-F082-40AC-8DA6-3FEB7E4361DE} = {445BB82A-F082-40AC-8DA6-3FEB7E4361DE}
+		{4C3C0B31-0A21-4E39-9F3A-5C896CD39DE8} = {4C3C0B31-0A21-4E39-9F3A-5C896CD39DE8}
+		{5645D5BE-6F6C-43DE-8737-145179F89DDD} = {5645D5BE-6F6C-43DE-8737-145179F89DDD}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{3B268D7B-08C5-4670-B909-B7C6677B3DF3}"
 	ProjectSection(SolutionItems) = preProject
@@ -20,6 +25,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkWithDB.DAL.Entity", "WorkWithDB.DAL.Entity\WorkWithDB.DAL.Entity.csproj", "{4C3C0B31-0A21-4E39-9F3A-5C896CD39DE8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkWithDB.Test", "WorkWithDB.Test\WorkWithDB.Test.csproj", "{FA07E984-0E2C-4A90-9BEF-2790A2C77375}"
+	ProjectSection(ProjectDependencies) = postProject
+		{445BB82A-F082-40AC-8DA6-3FEB7E4361DE} = {445BB82A-F082-40AC-8DA6-3FEB7E4361DE}
+		{4C3C0B31-0A21-4E39-9F3A-5C896CD39DE8} = {4C3C0B31-0A21-4E39-9F3A-5C896CD39DE8}
+		{5645D5BE-6F6C-43DE-8737-145179F89DDD} = {5645D5BE-6F6C-43DE-8737-145179F89DDD}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
