@@ -3,4 +3,16 @@
     <StringProperty Name="LinkedSettingsFile">..\..\Configs\Settings.StyleCop</StringProperty>
     <StringProperty Name="MergeSettingsFiles">Linked</StringProperty>
   </GlobalSettings>
+  <Analyzers>
+    <Analyzer AnalyzerId="StyleCopPlus.StyleCopPlusRules">
+      <Rules>
+        <Rule Name="CodeLineMustNotEndWithWhitespace">
+          <RuleSettings>
+            <BooleanProperty Name="Enabled">False</BooleanProperty>
+          </RuleSettings>
+        </Rule>
+      </Rules>
+      <AnalyzerSettings />
+    </Analyzer>
+  </Analyzers>
 </StyleCopSettings>
