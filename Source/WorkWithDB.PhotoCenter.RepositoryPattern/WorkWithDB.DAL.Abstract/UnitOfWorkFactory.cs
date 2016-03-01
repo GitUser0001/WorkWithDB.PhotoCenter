@@ -8,7 +8,7 @@ namespace WorkWithDB.DAL.Abstract
 {
     public static class UnitOfWorkFactory
     {
-        private static Func<IUnitOfWork> _factory;    
+        private static Func<IUnitOfWork> _factory;
 
         public static void __Initialize(Func<IUnitOfWork> factory)
         {

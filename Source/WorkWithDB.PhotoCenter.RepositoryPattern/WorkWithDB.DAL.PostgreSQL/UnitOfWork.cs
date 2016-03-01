@@ -63,7 +63,6 @@ namespace WorkWithDB.DAL.PostgreSQL
             }
         }
 
-
         public void Commit()
         {
             if (_transaction != null)
@@ -78,11 +77,6 @@ namespace WorkWithDB.DAL.PostgreSQL
             {
                 _transaction.Rollback();
             }
-        }
-
-        public void Rollback()
-        {
-            throw new NotImplementedException();
         }
     }
 }
