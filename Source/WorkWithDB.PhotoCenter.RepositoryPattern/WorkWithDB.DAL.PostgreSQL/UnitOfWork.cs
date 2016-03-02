@@ -5,6 +5,7 @@ using System.Text;
 using System.Data;
 using System.Threading.Tasks;
 using WorkWithDB.DAL.Abstract;
+using WorkWithDB.DAL.Abstract.Repository;
 using Npgsql;
 using WorkWithDB.DAL.PostgreSQL.Repository;
 using System.Configuration;

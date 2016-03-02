@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WorkWithDB.DAL.Entity.Entities;
 using WorkWithDB.DAL.PostgreSQL.Infrastructure;
-using WorkWithDB.DAL.Abstract;
+using WorkWithDB.DAL.Abstract.Repository;
 using Npgsql;
 
 namespace WorkWithDB.DAL.PostgreSQL.Repository
@@ -57,6 +57,11 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         }
 
         public bool Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public Goods GetByBarcode(int barcode)
         {
             throw new NotImplementedException();
         }
