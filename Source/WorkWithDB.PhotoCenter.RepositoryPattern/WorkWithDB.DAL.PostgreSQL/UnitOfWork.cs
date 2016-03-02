@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using WorkWithDB.DAL.Abstract;
 using Npgsql;
 using WorkWithDB.DAL.PostgreSQL.Repository;
+using System.Configuration;
 
 namespace WorkWithDB.DAL.PostgreSQL
 {
@@ -17,18 +18,9 @@ namespace WorkWithDB.DAL.PostgreSQL
 
         private IGoodsRepository _goodsRepository;
 
-        public UnitOfWork(string ip) : this(ip, "5432", "photocenterDB", "postgres", "1")
+        public UnitOfWork()
         {
-        }
-
-        public UnitOfWork() : this("192.168.0.104", "5432", "photocenterDB", "postgres", "1")
-        {
-        }
-
-        public UnitOfWork(string ip, string port, string dataBaseName, string name, string password)
-        {
-            var connectionString = 
-                string.Format("Server={0};Port={1};Database={2};User Id={3};Password={4};", ip, port, dataBaseName, name, password);
+            var connectionString = ConfigurationManager.ConnectionStrings["Home"].ConnectionString;
 
             _connection = new NpgsqlConnection(connectionString);
             _connection.Open();

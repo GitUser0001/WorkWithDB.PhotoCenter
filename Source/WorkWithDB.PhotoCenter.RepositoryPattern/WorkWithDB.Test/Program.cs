@@ -12,11 +12,10 @@ namespace WorkWithDB.Test
     {
         private static void Main(string[] args)
         {
-            UnitOfWorkFactory.__Initialize(n => new UnitOfWork());
+            UnitOfWorkFactory.__Initialize(() => new UnitOfWork());
 
-            using (IUnitOfWork scope = new UnitOfWork())
-            {
-                
+            using (IUnitOfWork scope = UnitOfWorkFactory.CreateInstance())
+            {                
                 var listOfGoods = scope.GoodsRepository.GetAll();
 
                 Console.WriteLine("Elements in Goods table = " + listOfGoods.Count + "\n");

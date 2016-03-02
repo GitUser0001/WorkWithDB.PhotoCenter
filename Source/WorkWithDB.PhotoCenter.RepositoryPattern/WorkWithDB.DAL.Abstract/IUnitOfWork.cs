@@ -11,6 +11,6 @@ namespace WorkWithDB.DAL.Abstract
         IGoodsRepository GoodsRepository { get; }
 
         void Commit();
-        void Rollback();
+        void RollBack();
     }
 }

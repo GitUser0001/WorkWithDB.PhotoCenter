@@ -15,7 +15,7 @@ namespace WorkWithDB.DAL.Abstract
             _factory = factory;
         }
         
-        private static IUnitOfWork CreateInstance()
+        public static IUnitOfWork CreateInstance()
         {
             if (_factory == null)
             {
