@@ -11,7 +11,7 @@ namespace WorkWithDB.DAL.Abstract.Repository
     {
         Tkey Insert(TEntity entity);
         bool Update(TEntity entity);
-        int Upsert(TEntity entity);
+        Tkey SaveOrUpdate(TEntity entity);
 
 
         int GetCount();

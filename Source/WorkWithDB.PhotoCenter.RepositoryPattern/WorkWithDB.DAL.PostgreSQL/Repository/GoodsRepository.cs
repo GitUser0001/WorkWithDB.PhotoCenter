@@ -31,20 +31,11 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
             throw new NotImplementedException();
         }
 
-        public int Insert(Goods entity)
+        public Goods GetByBarcode(int barcode)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(Goods entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Upsert(Goods entity)
-        {
-            throw new NotImplementedException();
-        }
 
         public int GetCount()
         {
@@ -60,8 +51,13 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         {
             throw new NotImplementedException();
         }
-        
-        public Goods GetByBarcode(int barcode)
+
+        public override int Insert(Goods entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool Update(Goods entity)
         {
             throw new NotImplementedException();
         }
