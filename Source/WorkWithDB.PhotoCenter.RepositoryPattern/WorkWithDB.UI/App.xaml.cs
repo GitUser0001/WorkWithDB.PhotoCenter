@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using WorkWithDB.DAL.Abstract;
+using WorkWithDB.DAL.PostgreSQL;
 
 namespace WorkWithDB.UI
 {
@@ -12,6 +14,7 @@ namespace WorkWithDB.UI
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
-    {
+    {        
+        //UnitOfWorkFactory.__Initialize(()=>new UnitOfWork());
     }
 }

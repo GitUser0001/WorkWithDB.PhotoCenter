@@ -54,7 +54,28 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Entities\Abstract\BaseEntity.cs" />
+    <Compile Include="Entities\Availability.cs" />
+    <Compile Include="Entities\Camera.cs" />
+    <Compile Include="Entities\CameraRent.cs" />
+    <Compile Include="Entities\Client.cs" />
+    <Compile Include="Entities\DeliveryGoods.cs" />
+    <Compile Include="Entities\Delivery.cs" />
+    <Compile Include="Entities\DiscountCard.cs" />
+    <Compile Include="Entities\DisplayOfPhoto.cs" />
+    <Compile Include="Entities\Filiya.cs" />
+    <Compile Include="Entities\FilmType.cs" />
     <Compile Include="Entities\Goods.cs" />
+    <Compile Include="Entities\GoodsSold.cs" />
+    <Compile Include="Entities\Kiosk.cs" />
+    <Compile Include="Entities\Order.cs" />
+    <Compile Include="Entities\PaperFormat.cs" />
+    <Compile Include="Entities\PhotoFormat.cs" />
+    <Compile Include="Entities\Photographer.cs" />
+    <Compile Include="Entities\PhotoService.cs" />
+    <Compile Include="Entities\Printing.cs" />
+    <Compile Include="Entities\Provider.cs" />
+    <Compile Include="Entities\Service.cs" />
+    <Compile Include="Entities\StructuralUnit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

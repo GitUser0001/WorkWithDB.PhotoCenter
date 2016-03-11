@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WorkWithDB.DAL.Entity.Entities.Abstract;
 
-namespace WorkWithDB.DAL.Abstract.Repository
+namespace WorkWithDB.DAL.Abstract
 {
     public interface IBaseRepository<Tkey, TEntity> where TEntity : BaseEntity<Tkey>
     {

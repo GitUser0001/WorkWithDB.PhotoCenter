@@ -36,7 +36,6 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
             throw new NotImplementedException();
         }
 
-
         public int GetCount()
         {
             throw new NotImplementedException();

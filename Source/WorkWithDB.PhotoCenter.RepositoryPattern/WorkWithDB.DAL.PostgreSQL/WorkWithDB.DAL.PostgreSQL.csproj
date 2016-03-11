@@ -64,7 +64,30 @@
     <Compile Include="Infrastructure\BaseRepository.cs" />
     <Compile Include="Infrastructure\SqlParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\AvailabilityRepository.cs" />
+    <Compile Include="Repository\CameraRentRepository.cs" />
+    <Compile Include="Repository\CameraRepository.cs" />
+    <Compile Include="Repository\ClientRepository.cs" />
+    <Compile Include="Repository\DeliveryRepository.cs" />
+    <Compile Include="Repository\DeliveryGoodsRepository.cs" />
+    <Compile Include="Repository\DiscountCardRepository.cs" />
+    <Compile Include="Repository\DisplayOfPhotoRepository.cs" />
+    <Compile Include="Repository\FiliyaRepository.cs" />
+    <Compile Include="Repository\FilmTypeRepository.cs" />
     <Compile Include="Repository\GoodsRepository.cs" />
+    <Compile Include="Repository\GoodsSoldRepository.cs" />
+    <Compile Include="Repository\IAvailabilityRepository.cs" />
+    <Compile Include="Repository\IFilmTypeRepository.cs" />
+    <Compile Include="Repository\KioskRepository.cs" />
+    <Compile Include="Repository\OrderRepository.cs" />
+    <Compile Include="Repository\PaperFormatRepository.cs" />
+    <Compile Include="Repository\PhotoFormatRepository.cs" />
+    <Compile Include="Repository\PhotographerRepository.cs" />
+    <Compile Include="Repository\PhotoServiceRepository.cs" />
+    <Compile Include="Repository\PrintingRepository.cs" />
+    <Compile Include="Repository\ProviderRepository.cs" />
+    <Compile Include="Repository\ServiceRepository.cs" />
+    <Compile Include="Repository\StructuralUnitRepository.cs" />
     <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>

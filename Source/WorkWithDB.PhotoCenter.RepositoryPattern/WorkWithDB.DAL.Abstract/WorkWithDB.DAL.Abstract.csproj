@@ -53,10 +53,32 @@
     <Compile Include="..\..\Configs\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Repository\IBaseRepository.cs" />
+    <Compile Include="IBaseRepository.cs" />
+    <Compile Include="Repository\IAvailabilityRepository.cs" />
+    <Compile Include="Repository\ICameraRepository.cs" />
+    <Compile Include="Repository\ICameraRentRepository.cs" />
+    <Compile Include="Repository\IClientRepository.cs" />
+    <Compile Include="Repository\IDeliveryRepository.cs" />
+    <Compile Include="Repository\IDeliveryGoodsRepository.cs" />
+    <Compile Include="Repository\IDiscountCardRepository.cs" />
+    <Compile Include="Repository\IDisplayOfPhotoRepository.cs" />
+    <Compile Include="Repository\IFiliyaRepository.cs" />
+    <Compile Include="Repository\IFilmTypeRepository.cs" />
     <Compile Include="Repository\IGoodsRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\IGoodsSoldRepository.cs" />
+    <Compile Include="Repository\IKioskRepository.cs" />
+    <Compile Include="Repository\IOrderRepository.cs" />
+    <Compile Include="Repository\IPaperFormatRepository.cs" />
+    <Compile Include="Repository\IPhotoFormatRepository.cs" />
+    <Compile Include="Repository\IPhotographerRepository.cs" />
+    <Compile Include="Repository\IPhotoServiceRepository.cs" />
+    <Compile Include="Repository\IPrintingRepository.cs" />
+    <Compile Include="Repository\IProviderRepository.cs" />
+    <Compile Include="Repository\IServiceRepository.cs" />
+    <Compile Include="Repository\IServiceType.cs" />
+    <Compile Include="Repository\IStructuralUnitRepository.cs" />
     <Compile Include="UnitOfWorkFactory.cs" />
   </ItemGroup>
   <ItemGroup>
