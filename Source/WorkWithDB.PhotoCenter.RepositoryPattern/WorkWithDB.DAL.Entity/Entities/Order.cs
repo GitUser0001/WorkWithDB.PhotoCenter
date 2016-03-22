@@ -10,16 +10,16 @@ namespace WorkWithDB.DAL.Entity.Entities
     public class Order : BaseEntity<int>
     {
         // Link
-        //public Client Client { get; set; }
-        //public DateTime SoldDate { get; set; }
-        //public StructuralUnit StructureUnit { get; set; }
+        public Client Client { get; set; }
+        public DateTime SoldDate { get; set; }
+        public StructuralUnit StructureUnit { get; set; }
         //\\
 
-        // Link
-        public int ClientID { get; set; }
-        public int SoldDateID { get; set; }
-        public int StructureUnitID { get; set; }
-        //\\
+        //// Link
+        //public int ClientID { get; set; }
+        //public int SoldDateID { get; set; }
+        //public int StructureUnitID { get; set; }
+        ////\\
 
         public Order Clone()
         {

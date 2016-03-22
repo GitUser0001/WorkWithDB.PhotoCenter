@@ -14,8 +14,8 @@ namespace WorkWithDB.DAL.Entity.Entities
         //\\
 
         // Link
-        //public Photographer Photographer { get; set; }
-        //public Filiya Filiya { get; set; }
+        public Photographer Photographer { get; set; }
+        public Filiya Filiya { get; set; }
         //\\
 
         // id
@@ -23,12 +23,13 @@ namespace WorkWithDB.DAL.Entity.Entities
         //\\
 
         // Link
-        public int PhotographerID { get; set; }
-        public int FiliyaID { get; set; }
+        //public int PhotographerID { get; set; }
+        //public int FiliyaID { get; set; }
         //\\
 
         public int PhotoCount { get; set; }
         public bool IsImmediately { get; set; }
+        public float Price { get; set; }
 
         public PhotoService Clone()
         {

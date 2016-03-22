@@ -10,13 +10,13 @@ namespace WorkWithDB.DAL.Entity.Entities
     public class Service : BaseEntity<int>
     {
         // Link
-        //public Order Order { get; set; }
-        //public Type Type { get; set; }
+        public Order Order { get; set; }
+        public ServiceType Type { get; set; }
         //\\
 
         // Link
-        public int OrderID { get; set; }
-        public int TypeID { get; set; }
+        //public int OrderID { get; set; }
+        //public int TypeID { get; set; }
         //\\
 
         public Service Clone()
@@ -27,7 +27,7 @@ namespace WorkWithDB.DAL.Entity.Entities
         public override string ToString()
         {
             return string.Format(
-                "Service(OrderId: {1})", OrderID);
+                "Service(OrderId: {1})", Id);
         }
     }
 }

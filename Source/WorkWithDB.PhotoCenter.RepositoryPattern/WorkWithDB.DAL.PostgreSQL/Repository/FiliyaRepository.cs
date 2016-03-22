@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,8 +10,96 @@ using WorkWithDB.DAL.PostgreSQL.Infrastructure;
 
 namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
-    public class FiliyaRepository : BaseRepository<int, Filiya>, IFiliyaRepository
+    internal class FiliyaRepository : BaseRepository<int, Filiya>, IFiliyaRepository
     {
+        private readonly string tabelName = "filiya";
 
+        public FiliyaRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
+            : base(connection, transaction)
+        {
+        }
+
+        public override int Save(Filiya entity)
+        {
+            return (int)
+                base.ExecuteScalar<double>(
+                    @"insert into @tableName (id) values (@id) SELECT SCOPE_IDENTITY()",
+                    new SqlParameters                    
+                    {          
+                        {"tableName", tabelName},
+                        {"id", entity.StructureUnitID},                                   
+                    });
+        }
+
+        public override bool Update(Filiya entity)
+        {
+            var res = base.ExecuteNonQuery(
+            @"update @tableName set id=@id",
+                new SqlParameters
+                    {
+                        {"tableName", tabelName},
+                        {"id", entity.StructureUnitID},        
+                    });
+
+            return res > 0;
+        }
+
+        public int GetCount()
+        {
+            return base.ExecuteScalar<int>(
+                        "select count(*) from @tableName",
+                        new SqlParameters 
+                        { 
+                            {"tableName", tabelName}
+                        });
+        }
+
+        public Filiya GetByID(int id)
+        {
+            return base.ExecuteSingleRowSelect(
+                    "select * from @tableName where service_id = @id",
+                    new SqlParameters()                        
+                    {
+                        {"tableName", tabelName},
+                        {"id", id}
+                    });
+        }
+
+        public bool Delete(int id)
+        {
+            var res = base.ExecuteNonQuery(
+                        "delete from @tableName where service_id = @id",
+                        new SqlParameters()
+                        {
+                            {"tableName", tabelName},
+                            {"id", id}
+                        });
+
+            if (res > 1)
+            {
+                throw new InvalidOperationException("Multiple rows deleted by single delete query");
+            }
+
+            return res == 1;
+        }
+
+        public IList<Filiya> GetAll()
+        {
+            return base.ExecuteSelect(
+                "select * from @tableName",
+                new SqlParameters 
+                { 
+                    {"tableName", tabelName}
+                });
+        }
+        
+        protected override Filiya DefaultRowMapping(NpgsqlDataReader reader)
+        {
+            return new Filiya
+            {
+                Id = (int)reader["id"],
+                StructureUnitID = (int)reader["structural_unit_id"]
+            };
+        }
     }
 }

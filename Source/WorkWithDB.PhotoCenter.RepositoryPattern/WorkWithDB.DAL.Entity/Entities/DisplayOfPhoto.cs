@@ -7,14 +7,14 @@ using WorkWithDB.DAL.Entity.Entities.Abstract;
 
 namespace WorkWithDB.DAL.Entity.Entities
 {
-    public class DisplayOfPhoto
+    public class DisplayOfPhoto : BaseEntity<int>
     {
         //id
         //public Service Service { get; set; }
         //\\
         
         //Link
-        //public FilmType FilmType { get; set; }
+        public FilmType FilmType { get; set; }
         //\\
 
         //id
@@ -22,11 +22,12 @@ namespace WorkWithDB.DAL.Entity.Entities
         //\\
 
         //Link
-        public int FilmTypeID { get; set; }
+        //public int FilmTypeID { get; set; }
         //\\
 
         public float Price { get; set; }
-        public bool IsWeSold { get; set; }        
+        public bool IsWeSold { get; set; }
+        public bool IsImmediatelly { get; set; }
 
         public DisplayOfPhoto Clone()
         {

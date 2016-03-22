@@ -7,7 +7,7 @@ using WorkWithDB.DAL.Entity.Entities.Abstract;
 
 namespace WorkWithDB.DAL.Entity.Entities
 {
-    public class Filiya
+    public class Filiya : BaseEntity<int>
     {
         // id
         //public StructuralUnit StructureUnit { get; set; }

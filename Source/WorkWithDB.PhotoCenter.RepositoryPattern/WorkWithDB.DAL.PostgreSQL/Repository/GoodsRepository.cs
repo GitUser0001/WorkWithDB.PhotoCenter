@@ -12,53 +12,128 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class GoodsRepository : BaseRepository<int, Goods>, IGoodsRepository
     {
+        private readonly string tabelName = "goods";
+
         public GoodsRepository(NpgsqlConnection connection, NpgsqlTransaction transaction) : base(connection, transaction)
         {
-        }
-
-        public IList<Goods> GetAll()
+        }       
+        
+        public override int Save(Goods entity)
         {
-            return base.ExecuteSelect("SELECT id, name, made_in, barcode, cost, critical_number FROM \"BD_LAB\".goods;");
-        }
-
-        public IList<Goods> GetByCountry(string countryName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetCountByCountry(string countryName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Goods GetByBarcode(int barcode)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetCount()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Goods GetByID(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override int Insert(Goods entity)
-        {
-            throw new NotImplementedException();
+            return (int)
+                base.ExecuteScalar<double>(
+                    @"insert into @tableName (id,name,made_in,barcode,cost,critical_number)
+                    values (@id,@name,@made_in,@barcode,@cost,@critical_number) SELECT SCOPE_IDENTITY()",
+                    new SqlParameters                    
+                    {          
+                        {"tableName", tabelName},
+                        {"id@", entity.Id},                    
+                        {"name", entity.Name},                    
+                        {"made_in", entity.MadeIN},    
+                        {"barcode", entity.Barcode},                    
+                        {"cost", entity.Cost},                    
+                        {"critical_number", entity.CriticalNumber}               
+                    });
         }
 
         public override bool Update(Goods entity)
         {
-            throw new NotImplementedException();
+            var res = base.ExecuteNonQuery(
+            @"update @tableName set id=@id,name=@name,made_in=@made_in,barcode=@barcode,cost=@cost,critical_number=@critical_number",
+                new SqlParameters
+                    {
+                        {"tableName", tabelName},
+                        {"id@", entity.Id},                    
+                        {"name", entity.Name},                    
+                        {"made_in", entity.MadeIN},    
+                        {"barcode", entity.Barcode},                    
+                        {"cost", entity.Cost},                    
+                        {"critical_number", entity.CriticalNumber}  
+                    });
+
+            return res > 0;
+        }
+
+        public IList<Goods> GetByCountry(string countryName)
+        {
+            return base.ExecuteSelect(
+                    "select * from @tableName where made_id = @id",
+                    new SqlParameters()                        
+                    {
+                        {"tableName", tabelName},
+                        {"id", countryName}
+                    });
+        }
+
+        public int GetCountByCountry(string countryName)
+        {
+            return base.ExecuteScalar<int>(
+                    "select count(*) from @tableName where made_id = @id",
+                    new SqlParameters()                        
+                    {
+                        {"tableName", tabelName},
+                        {"id", countryName}
+                    });
+        }
+
+        public Goods GetByBarcode(int barcode)
+        {
+            return base.ExecuteSingleRowSelect(
+                    "select * from @tableName where barcode = @id",
+                    new SqlParameters()                        
+                    {
+                        {"tableName", tabelName},
+                        {"id", barcode}
+                    });
+        }
+
+        public int GetCount()
+        {
+            return base.ExecuteScalar<int>(
+                        "select count(*) from @tableName",
+                        new SqlParameters 
+                        { 
+                            {"tableName", tabelName}
+                        });
+        }
+
+        public Goods GetByID(int id)
+        {
+            return base.ExecuteSingleRowSelect(
+                    "select * from @tableName where id = @id",
+                    new SqlParameters()                        
+                    {
+                        {"tableName", tabelName},
+                        {"id", id}
+                    });
+        }
+
+        public bool Delete(int id)
+        {
+            var res = base.ExecuteNonQuery(
+                        "delete from @tableName where id = @id",
+                        new SqlParameters()
+                        {
+                            {"tableName", tabelName},
+                            {"id", id}
+                        });
+
+            if (res > 1)
+            {
+                throw new InvalidOperationException("Multiple rows deleted by single delete query");
+            }
+
+            return res == 1;
+        }
+
+        public IList<Goods> GetAll()
+        {
+            return base.ExecuteSelect(
+                "select * from @tableName",
+                new SqlParameters 
+                { 
+                    {"tableName", tabelName}
+                });
         }
 
         protected override Goods DefaultRowMapping(NpgsqlDataReader reader)

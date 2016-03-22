@@ -10,13 +10,13 @@ namespace WorkWithDB.DAL.Entity.Entities
     public class Delivery : BaseEntity<int>
     {
         //Link
-        //public StructuralUnit StructuralUnit { get; set; }
-        //public Provider Provider { get; set; }
+        public StructuralUnit StructuralUnit { get; set; }
+        public Provider Provider { get; set; }
         //\\
 
         //Link
-        public int StructuralUnitID { get; set; }
-        public int ProviderID { get; set; }
+        //public int StructuralUnitID { get; set; }
+        //public int ProviderID { get; set; }
         //\\
 
 

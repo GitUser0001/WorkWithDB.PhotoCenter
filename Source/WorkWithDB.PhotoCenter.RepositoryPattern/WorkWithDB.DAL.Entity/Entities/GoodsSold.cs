@@ -7,7 +7,7 @@ using WorkWithDB.DAL.Entity.Entities.Abstract;
 
 namespace WorkWithDB.DAL.Entity.Entities
 {
-    public class GoodsSold
+    public class GoodsSold : BaseEntity<int>
     {
         ////id
         //public Service Service { get; set; }

@@ -77,7 +77,7 @@
     <Compile Include="Repository\IPrintingRepository.cs" />
     <Compile Include="Repository\IProviderRepository.cs" />
     <Compile Include="Repository\IServiceRepository.cs" />
-    <Compile Include="Repository\IServiceType.cs" />
+    <Compile Include="Repository\IServiceTypeRepository.cs" />
     <Compile Include="Repository\IStructuralUnitRepository.cs" />
     <Compile Include="UnitOfWorkFactory.cs" />
   </ItemGroup>

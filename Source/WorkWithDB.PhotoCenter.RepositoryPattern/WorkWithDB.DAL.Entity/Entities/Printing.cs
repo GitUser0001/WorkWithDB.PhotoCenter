@@ -14,8 +14,8 @@ namespace WorkWithDB.DAL.Entity.Entities
         //\\
 
         // Link
-        //public PhotoFormat PhotoFormat { get; set; }
-        //public PaperFormat PaperFormat { get; set; } 
+        public PhotoFormat PhotoFormat { get; set; }
+        public PaperFormat PaperFormat { get; set; } 
         //\\
 
 
@@ -23,10 +23,10 @@ namespace WorkWithDB.DAL.Entity.Entities
         public int ServiceID { get; set; }
         //\\
 
-        // Link
-        public int PhotoFormatID { get; set; }
-        public int PaperFormatID { get; set; }
-        //\\
+        //// Link
+        //public int PhotoFormatID { get; set; }
+        //public int PaperFormatID { get; set; }
+        ////\\
 
 
         public float Price { get; set; }

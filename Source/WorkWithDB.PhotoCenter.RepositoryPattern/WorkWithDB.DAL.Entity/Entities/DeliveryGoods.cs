@@ -7,16 +7,16 @@ using WorkWithDB.DAL.Entity.Entities.Abstract;
 
 namespace WorkWithDB.DAL.Entity.Entities
 {
-    public class DeliveryGoods
+    public class DeliveryGoods : BaseEntity<int>
     {
         // id
-        //public Delivery Delivery { get; set; }
-        //public Goods Goods { get; set; }
+        public Delivery Delivery { get; set; }
+        public Goods Goods { get; set; }
         //\\
 
         // id
-        public int DeliveryID { get; set; }
-        public int GoodsID { get; set; }
+        //public int DeliveryID { get; set; }
+        //public int GoodsID { get; set; }
         //\\
 
         public int Count { get; set; }
@@ -30,7 +30,7 @@ namespace WorkWithDB.DAL.Entity.Entities
         public override string ToString()
         {
             return string.Format(
-                "DeliveryGoods(DeliveryId: {0}, GoodsId: {1})", DeliveryID, GoodsID);
+                "DeliveryGoods(DeliveryId: {0}, GoodsId: {1})", Delivery.Id, Goods.Id);
         }
     }
 }

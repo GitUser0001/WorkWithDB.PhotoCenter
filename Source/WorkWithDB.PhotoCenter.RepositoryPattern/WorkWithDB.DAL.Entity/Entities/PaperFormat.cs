@@ -10,7 +10,7 @@ namespace WorkWithDB.DAL.Entity.Entities
     public class PaperFormat : BaseEntity<int>
     {
         public string Name { get; set; }
-        public float PriceOne { get; set; }
+        public float PriceOfOne { get; set; }
         public string Size { get; set; }
 
         public PaperFormat Clone()

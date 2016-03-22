@@ -9,7 +9,7 @@ namespace WorkWithDB.DAL.Abstract
 {
     public interface IBaseRepository<Tkey, TEntity> where TEntity : BaseEntity<Tkey>
     {
-        Tkey Insert(TEntity entity);
+        Tkey Save(TEntity entity);
         bool Update(TEntity entity);
         Tkey SaveOrUpdate(TEntity entity);
 

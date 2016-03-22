@@ -7,14 +7,14 @@ using WorkWithDB.DAL.Entity.Entities.Abstract;
 
 namespace WorkWithDB.DAL.Entity.Entities
 {
-    public class Kiosk
+    public class Kiosk : BaseEntity<int>
     {
         //id
         //public StructuralUnit StructureUnit { get; set; }
         //\\
 
         //Link        
-        //public Filiya Filiya { get; set; }
+        public Filiya Filiya { get; set; }
         //\\
 
         //id
@@ -22,7 +22,7 @@ namespace WorkWithDB.DAL.Entity.Entities
         //\\
 
         //Link        
-        public int FiliyaID { get; set; }
+        //public int FiliyaID { get; set; }
         //\\
 
         public Kiosk Clone()

@@ -7,24 +7,24 @@ using WorkWithDB.DAL.Entity.Entities.Abstract;
 
 namespace WorkWithDB.DAL.Entity.Entities
 {
-    public class CameraRent
+    public class CameraRent : BaseEntity<int>
     {
         //id
-        //public Service Service { get; set; }
+        public Service Service { get; set; }
         //\\
         
         // Link
-        //public Camera Camera { get; set; }
-        //public Filiya Filiya { get; set; }
+        public Camera Camera { get; set; }
+        public Filiya Filiya { get; set; }
         //\\
 
         //id
-        public int ServiceID { get; set; }
+        //public int ServiceID { get; set; }
         //\\
 
         // Link
-        public int CameraID { get; set; }
-        public int FiliyaID { get; set; }
+        //public int CameraID { get; set; }
+        //public int FiliyaID { get; set; }
         //\\
 
         public float Price { get; set; }
@@ -40,7 +40,7 @@ namespace WorkWithDB.DAL.Entity.Entities
 
         public override string ToString()
         {
-            return string.Format("CameraRent(ServiceId: {1})", ServiceID);
+            return string.Format("CameraRent(ServiceId: {1})", Service.Id);
         }
     }
 }

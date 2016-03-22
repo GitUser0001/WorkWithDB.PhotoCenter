@@ -10,16 +10,16 @@ namespace WorkWithDB.DAL.Entity.Entities
     public class Client : BaseEntity<int>
     {
         //Link
-        //public DiscountCard DiscountCard { get; set; }
+        public DiscountCard DiscountCard { get; set; }
         //\\
 
         //Link
-        public int DiscountCardID { get; set; }
+        //public int DiscountCardID { get; set; }
         //\\
 
         public DateTime RegistrationDate { get; set; }
-        public string Full_name { get; set; }
-        public bool Is_profesional { get; set; }
+        public string FullName { get; set; }
+        public bool IsProfesional { get; set; }
 
         public Client Clone()
         {

@@ -23,7 +23,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Infrastructure
         {
             if (Object.Equals(entity.Id, default(Tkey)))
             {
-                return Insert(entity);
+                return Save(entity);
             }
             else
             {
@@ -38,7 +38,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Infrastructure
             }
         }
 
-        public abstract Tkey Insert(TEntity entity);
+        public abstract Tkey Save(TEntity entity);
         public abstract bool Update(TEntity entity);
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Infrastructure
             }
         }
 
-        protected TEntity ExecuteSingleRowSelect(string sql, NpgsqlParameters sqlParameters = null)
+        protected TEntity ExecuteSingleRowSelect(string sql, SqlParameters sqlParameters = null)
         {
             return ExecuteSingleRowSelect(sql, DefaultRowMapping, sqlParameters);
         }
@@ -126,7 +126,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Infrastructure
             }
         }
 
-        protected IList<TEntity> ExecuteSelect(string sql, NpgsqlParameters sqlParameters = null)
+        protected IList<TEntity> ExecuteSelect(string sql, SqlParameters sqlParameters = null)
         {
             return ExecuteSelect(sql, DefaultRowMapping, sqlParameters);
         }

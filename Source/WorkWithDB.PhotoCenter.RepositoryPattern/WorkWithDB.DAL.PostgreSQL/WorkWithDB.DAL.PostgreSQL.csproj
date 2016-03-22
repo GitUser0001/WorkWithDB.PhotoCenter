@@ -76,8 +76,6 @@
     <Compile Include="Repository\FilmTypeRepository.cs" />
     <Compile Include="Repository\GoodsRepository.cs" />
     <Compile Include="Repository\GoodsSoldRepository.cs" />
-    <Compile Include="Repository\IAvailabilityRepository.cs" />
-    <Compile Include="Repository\IFilmTypeRepository.cs" />
     <Compile Include="Repository\KioskRepository.cs" />
     <Compile Include="Repository\OrderRepository.cs" />
     <Compile Include="Repository\PaperFormatRepository.cs" />
@@ -87,6 +85,7 @@
     <Compile Include="Repository\PrintingRepository.cs" />
     <Compile Include="Repository\ProviderRepository.cs" />
     <Compile Include="Repository\ServiceRepository.cs" />
+    <Compile Include="Repository\ServiceTypeRepository.cs" />
     <Compile Include="Repository\StructuralUnitRepository.cs" />
     <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
