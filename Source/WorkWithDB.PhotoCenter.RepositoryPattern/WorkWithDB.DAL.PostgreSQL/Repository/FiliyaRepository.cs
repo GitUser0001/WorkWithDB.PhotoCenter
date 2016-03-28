@@ -12,7 +12,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class FiliyaRepository : BaseRepository<int, Filiya>, IFiliyaRepository
     {
-        private readonly string tabelName = "filiya";
+        private readonly string tabelName = "\"BD_LAB\".\"filiya\"";
 
         public FiliyaRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
@@ -22,13 +22,15 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public override int Save(Filiya entity)
         {
             return (int)
-                base.ExecuteScalar<double>(
-                    @"insert into @tableName (id) values (@id) SELECT SCOPE_IDENTITY()",
-                    new SqlParameters                    
+            base.ExecuteNonQuery(
+                    "insert into \"BD_LAB\".\"filiya\" (\"id\",\"structural_unit_id\") values (@id, @stUnitID)",
+                    new SqlParameters
                     {          
-                        {"tableName", tabelName},
-                        {"id", entity.StructureUnitID},                                   
+                        //{"tableName", tabelName},
+                        {"stUnitID", entity.StructureUnitID},
+                        {"id", entity.Id},                                   
                     });
+            //return 1;
         }
 
         public override bool Update(Filiya entity)

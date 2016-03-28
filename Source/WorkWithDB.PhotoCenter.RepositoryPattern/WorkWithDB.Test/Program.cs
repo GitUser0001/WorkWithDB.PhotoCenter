@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WorkWithDB.DAL.Abstract;
 using WorkWithDB.DAL.PostgreSQL;
+using Model = WorkWithDB.DAL.Entity.Entities;
 
 namespace WorkWithDB.Test
 {
@@ -15,24 +16,16 @@ namespace WorkWithDB.Test
             UnitOfWorkFactory.__Initialize(() => new UnitOfWork());
 
             using (IUnitOfWork scope = UnitOfWorkFactory.CreateInstance())
-            {                
-                var listOfGoods = scope.GoodsRepository.GetAll();
-
-                Console.WriteLine("Elements in Goods table = " + listOfGoods.Count + "\n");
-                int i = 0;
-
-                foreach (var goods in listOfGoods)
+            {
+                Model.Filiya st = new Model.Filiya()
                 {
-                    Console.WriteLine(goods.ToString());
-                    i++;
+                    Id = 2,
+                    StructureUnitID = 1
+                };
 
-                    if (i > 10)
-                    {
-                        break;
-                    }
-                }
+                int a = scope.FiliyaRepository.Save(st);
 
-                Console.ReadLine();
+                //Console.ReadLine();
             }
         }
     }

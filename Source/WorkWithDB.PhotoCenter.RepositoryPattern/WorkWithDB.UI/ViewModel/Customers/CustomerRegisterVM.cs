@@ -10,9 +10,6 @@ using Model = WorkWithDB.DAL.Entity.Entities;
 
 namespace WorkWithDB.UI.ViewModel.Customers
 {
-    [SuppressMessage("Microsoft.StyleCop.CSharp.DocumentationRules",
-                    "SA1106 :The code contains an extra semicolon.",
-                    Justification = "Reviewed. Suppression is OK here.")]
     public class CustomerRegisterVM : ViewModelBase
     {
         private string _name;
@@ -74,12 +71,14 @@ namespace WorkWithDB.UI.ViewModel.Customers
 
         public void ExecuteAddPersonalCardCommand(object parameter)
         {
-            //Model.Client client = new Model.Client()
-            //{
-            //    FullName = LastName + " " + Name,
-            //    IsProfesional = IsPro,
-            //    RegistrationDate = DateTime.Now
-            //};
+            Model.Client client = new Model.Client()
+            {
+                FullName = LastName + " " + Name,
+                IsProfesional = IsPro,
+                RegistrationDate = DateTime.Now
+            };
+
+            StateHolder.RegistratingClient = client;
 
             WindowManager.ChangeView(parameter as string);
         }

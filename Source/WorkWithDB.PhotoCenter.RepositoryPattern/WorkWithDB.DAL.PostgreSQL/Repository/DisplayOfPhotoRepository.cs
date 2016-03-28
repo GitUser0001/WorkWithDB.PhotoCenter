@@ -23,7 +23,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public override int Save(DisplayOfPhoto entity)
         {
             return (int)
-                base.ExecuteScalar<double>(
+                base.ExecuteNonQuery(
                     @"insert into @tableName (service_id,price,is_we_sold,film_type_id,is_immediately)
                     values (@service_id,@price,@is_we_sold,@film_type_id,@is_immediately) SELECT SCOPE_IDENTITY()",
                     new SqlParameters                    
