@@ -13,21 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WorkWithDB.UI
+namespace WorkWithDB.UI.Views.Customers
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for PersonalCardRegister.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class PersonalCardRegister : UserControl
     {
-        public MainWindow()
+        public PersonalCardRegister()
         {
             InitializeComponent();
-        }
-
-        private void ButtonClose(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
     }
 }

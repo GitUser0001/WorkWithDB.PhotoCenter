@@ -13,21 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WorkWithDB.UI
+namespace WorkWithDB.UI.Views.Customers
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for CustomerRegister.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class CustomerRegister : UserControl
     {
-        public MainWindow()
+        public CustomerRegister()
         {
             InitializeComponent();
-        }
-
-        private void ButtonClose(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
     }
 }

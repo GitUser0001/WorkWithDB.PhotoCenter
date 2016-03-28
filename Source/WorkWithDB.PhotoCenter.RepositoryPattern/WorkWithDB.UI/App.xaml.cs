@@ -14,7 +14,11 @@ namespace WorkWithDB.UI
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
-    {        
-        //UnitOfWorkFactory.__Initialize(()=>new UnitOfWork());
+    {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            UnitOfWorkFactory.__Initialize(() => new UnitOfWork());
+        }
     }
 }
