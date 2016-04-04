@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkWithDB.DAL.Abstract;
+using WorkWithDB.DAL.Entity.Entities;
 using WorkWithDB.DAL.PostgreSQL;
 using Model = WorkWithDB.DAL.Entity.Entities;
+using System.Configuration;
 
 namespace WorkWithDB.Test
 {
@@ -15,18 +17,27 @@ namespace WorkWithDB.Test
         {
             UnitOfWorkFactory.__Initialize(() => new UnitOfWork());
 
+            Console.WriteLine("Connecting...");
+            Console.WriteLine(ConfigurationManager.ConnectionStrings["Home"].ConnectionString);
             using (IUnitOfWork scope = UnitOfWorkFactory.CreateInstance())
             {
-                Model.Filiya st = new Model.Filiya()
+                Console.WriteLine("Connected");
+
+                Goods goods = new Goods()
                 {
-                    Id = 2,
-                    StructureUnitID = 1
+                    Barcode = 1323,
+                    Cost = 2,
+                    CriticalNumber = 2,
+                    MadeIN = "AAAAAA",
+                    Name = "sssssss"
                 };
 
-                int a = scope.FiliyaRepository.Save(st);
-
-                //Console.ReadLine();
+                int a = scope.GoodsRepository.Save(goods);
+                scope.Commit();
+                Console.WriteLine("res = " + a.ToString());                
             }
+
+            Console.ReadLine();
         }
     }
 }

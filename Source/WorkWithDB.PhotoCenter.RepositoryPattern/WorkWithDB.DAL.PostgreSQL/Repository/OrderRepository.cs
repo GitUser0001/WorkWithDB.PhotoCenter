@@ -13,8 +13,6 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class OrderRepository : BaseRepository<int, Order>, IOrderRepository
     {
-        private readonly string tabelName = "order";
-
         public OrderRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
         { 
@@ -22,27 +20,27 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public override int Save(Order entity)
         {
-            return (int)
-                base.ExecuteScalar<double>(
-                    @"insert into @tableName (id, structure_unit, client_id, sold_date)
-                    values (@id, @structure_unit, @client_id, @sold_date) SELECT SCOPE_IDENTITY()",
+            entity.Id =
+                base.ExecuteScalar<int>(
+                    @"insert into order (structure_unit, client_id, sold_date)
+                    values (@structure_unit, @client_id, @sold_date) SELECT RETURNING id",
                     new SqlParameters                    
-                    {          
-                        {"tableName", tabelName},
-                        {"id", entity.Id},                    
+                    {                   
                         {"structure_unit", entity.StructureUnit.Id},                    
                         {"client_id", entity.Client.Id},    
                         {"sold_date", entity.SoldDate}         
                     });
+
+            return entity.Id;
         }
 
         public override bool Update(Order entity)
         {
             var res = base.ExecuteNonQuery(
-            @"update @tableName set id=@id,structure_unit=@structure_unit, client_id=@client_id, sold_date=@sold_date",
+            @"update order set structure_unit=@structure_unit, client_id=@client_id, sold_date=@sold_date
+                WHERE id=@id",
                 new SqlParameters
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", entity.Id},                    
                         {"structure_unit", entity.StructureUnit.Id},                    
                         {"client_id", entity.Client.Id},    
@@ -54,21 +52,15 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>(
-                        "select count(*) from @tableName",
-                        new SqlParameters 
-                        { 
-                            {"tableName", tabelName}
-                        });
+            return base.ExecuteScalar<int>("select count(*) from order");
         }
 
         public Order GetByID(int id)
         {
             return base.ExecuteSingleRowSelect(
-                    "select * from @tableName where id = @id",
+                    "select * from order where id = @id",
                     new SqlParameters()                        
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", id}
                     });
         }
@@ -76,10 +68,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public bool Delete(int id)
         {
             var res = base.ExecuteNonQuery(
-                        "delete from @tableName where id = @id",
+                        "delete from order where id = @id",
                         new SqlParameters()
-                        {
-                            {"tableName", tabelName},
+                        {                             
                             {"id", id}
                         });
 
@@ -93,12 +84,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public IList<Order> GetAll()
         {
-            return base.ExecuteSelect(
-                "select * from @tableName",
-                new SqlParameters 
-                { 
-                    {"tableName", tabelName}
-                });
+            return base.ExecuteSelect("select * from order");
         }
 
         protected override Order DefaultRowMapping(NpgsqlDataReader reader)

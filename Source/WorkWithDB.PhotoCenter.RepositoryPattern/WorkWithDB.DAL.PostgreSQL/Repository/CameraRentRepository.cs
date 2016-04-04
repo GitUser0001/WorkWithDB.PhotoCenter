@@ -14,8 +14,6 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class CameraRentRepository : BaseRepository<int, CameraRent>, ICameraRentRepository
     {
-        private readonly string tabelName = "camera_rent";
-
         public CameraRentRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
         {
@@ -23,13 +21,12 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public override int Save(CameraRent entity)
         {
-            return (int)
-                base.ExecuteScalar<double>(
-                    @"insert into @tableName (service_id,filiya_id,price,passport_number,passport_code,camera_model,for_time)
-                    values (@service_id,@filiya_id,@price,@passport_number,@passport_code,@camera_model,@for_time) SELECT SCOPE_IDENTITY()",
+            entity.Id =
+                base.ExecuteScalar<int>(
+                    @"insert into camera_rent (service_id,filiya_id,price,passport_number,passport_code,camera_model,for_time)
+                    values (@service_id,@filiya_id,@price,@passport_number,@passport_code,@camera_model,@for_time) RETURNING id",
                     new SqlParameters                    
-                    {          
-                        {"tableName", tabelName},
+                    {    
                         {"service_id", entity.Service.Id},                    
                         {"filiya_id", entity.Filiya.StructureUnitID},                    
                         {"price", entity.Price},    
@@ -38,16 +35,19 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
                         {"camera_model", entity.Camera.Id},
                         {"for_time", entity.PeriodOfTime}                 
                     });
+
+            return entity.Id;
         }
 
         public override bool Update(CameraRent entity)
         {
             var res = base.ExecuteNonQuery(
-            @"update @tableName set service_id = @service_id,filiya_id = @filiya_id,price = @price,
-                passport_number = @passport_number,passport_code = @passport_code,camera_model = @camera_model,for_time = @for_time",
+            @"update camera_rent set service_id = @service_id,filiya_id = @filiya_id,price = @price,
+                passport_number = @passport_number,passport_code = @passport_code,camera_model = @camera_model,for_time = @for_time
+                WHERE id=@id",
                 new SqlParameters
                     {
-                        {"tableName", tabelName},
+                        {"id", entity.Id},
                         {"service_id", entity.Service.Id},                     
                         {"filiya_id", entity.Filiya.StructureUnitID},                    
                         {"price", entity.Price},    
@@ -62,21 +62,15 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>(
-                        "select count(*) from @tableName",
-                        new SqlParameters 
-                        { 
-                            {"tableName", tabelName}
-                        });
+            return base.ExecuteScalar<int>("select count(*) from camera_rent");
         }
 
         public CameraRent GetByID(int id)
         {
             return base.ExecuteSingleRowSelect(
-                    "select * from @tableName where id = @id",
+                    "select * from camera_rent where id = @id",
                     new SqlParameters()                        
                     {
-                        {"tableName", tabelName},
                         {"id", id}
                     });
         }
@@ -84,10 +78,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public bool Delete(int id)
         {
             var res = base.ExecuteNonQuery(
-                        "delete from @tableName where id = @id",
+                        "delete from camera_rent where id = @id",
                         new SqlParameters()
                         {
-                            {"tableName", tabelName},
                             {"id", id}
                         });
 
@@ -101,12 +94,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public IList<CameraRent> GetAll()
         {
-            return base.ExecuteSelect(
-                "select * from @tableName",
-                new SqlParameters 
-                { 
-                    {"tableName", tabelName}
-                });
+            return base.ExecuteSelect("select * from camera_rent");
         }
 
         protected override CameraRent DefaultRowMapping(NpgsqlDataReader reader)

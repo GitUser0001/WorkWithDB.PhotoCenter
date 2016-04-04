@@ -12,8 +12,6 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class ProviderRepository : BaseRepository<int, Provider>, IProviderRepository
     {
-        private readonly string tabelName = "provicer";
-
         public ProviderRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
         { 
@@ -21,28 +19,28 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public override int Save(Provider entity)
         {
-            return (int)
-                base.ExecuteScalar<double>(
-                    @"insert into @tableName (id,name,mobile_number,email,owner_info)
-                    values (@id,@name,@mobile_number,@email,@owner_info) SELECT SCOPE_IDENTITY()",
+            entity.Id =
+                base.ExecuteScalar<int>(
+                    @"insert into provicer (name,mobile_number,email,owner_info)
+                    values (@name,@mobile_number,@email,@owner_info) SELECT RETURNING id",
                     new SqlParameters                    
-                    {          
-                        {"tableName", tabelName},
-                        {"id", entity.Id},                    
+                    {               
                         {"name", entity.Name},                    
                         {"mobile_number", entity.MobileNumber},    
                         {"email", entity.Email}, 
                         {"owner_info", entity.OwnerInfo}  
                     });
+
+            return entity.Id;
         }
 
         public override bool Update(Provider entity)
         {
             var res = base.ExecuteNonQuery(
-            @"update @tableName set id=@id,name=@name,mobile_number=@mobile_number,email=@email,owner_info=@owner_info",
+            @"update provicer set name=@name,mobile_number=@mobile_number,email=@email,owner_info=@owner_info
+                WHERE id=@id",
                 new SqlParameters
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", entity.Id},                    
                         {"name", entity.Name},                    
                         {"mobile_number", entity.MobileNumber},    
@@ -55,21 +53,15 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>(
-                        "select count(*) from @tableName",
-                        new SqlParameters 
-                        { 
-                            {"tableName", tabelName}
-                        });
+            return base.ExecuteScalar<int>("select count(*) from provicer");
         }
 
         public Provider GetByID(int id)
         {
             return base.ExecuteSingleRowSelect(
-                "select * from @tableName where id = @id",
+                "select * from provicer where id = @id",
                 new SqlParameters()                        
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", id}
                     });
         }
@@ -77,10 +69,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public bool Delete(int id)
         {
             var res = base.ExecuteNonQuery(
-                        "delete from @tableName where id = @id",
+                        "delete from provicer where id = @id",
                         new SqlParameters()
-                        {
-                            {"tableName", tabelName},
+                        {                             
                             {"id", id}
                         });
 
@@ -94,12 +85,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public IList<Provider> GetAll()
         {
-            return base.ExecuteSelect(
-                "select * from @tableName",
-                new SqlParameters 
-                { 
-                    {"tableName", tabelName}
-                });
+            return base.ExecuteSelect("select * from provicer");
         }
 
         protected override Provider DefaultRowMapping(NpgsqlDataReader reader)

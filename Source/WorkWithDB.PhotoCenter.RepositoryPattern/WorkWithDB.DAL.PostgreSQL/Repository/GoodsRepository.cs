@@ -12,38 +12,35 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class GoodsRepository : BaseRepository<int, Goods>, IGoodsRepository
     {
-        private readonly string tabelName = "goods";
-
         public GoodsRepository(NpgsqlConnection connection, NpgsqlTransaction transaction) : base(connection, transaction)
         {
         }       
         
         public override int Save(Goods entity)
         {
-            return (int)
-                base.ExecuteScalar<double>(
-                    @"insert into @tableName (id,name,made_in,barcode,cost,critical_number)
-                    values (@id,@name,@made_in,@barcode,@cost,@critical_number) SELECT SCOPE_IDENTITY()",
+            entity.Id = base.ExecuteScalar<int>(
+                    @"insert into goods (name,made_in,barcode,cost,critical_number)
+                    values (@name,@made_in,@barcode,@cost,@critical_number) SELECT RETURNING id",
                     new SqlParameters                    
-                    {          
-                        {"tableName", tabelName},
-                        {"id@", entity.Id},                    
+                    {                   
                         {"name", entity.Name},                    
                         {"made_in", entity.MadeIN},    
                         {"barcode", entity.Barcode},                    
                         {"cost", entity.Cost},                    
                         {"critical_number", entity.CriticalNumber}               
                     });
+
+            return entity.Id;
         }
 
         public override bool Update(Goods entity)
         {
             var res = base.ExecuteNonQuery(
-            @"update @tableName set id=@id,name=@name,made_in=@made_in,barcode=@barcode,cost=@cost,critical_number=@critical_number",
+            @"update goods set name=@name,made_in=@made_in,barcode=@barcode,cost=@cost,critical_number=@critical_number
+                WHERE id = @id",
                 new SqlParameters
                     {
-                        {"tableName", tabelName},
-                        {"id@", entity.Id},                    
+                        {"id", entity.Id},                    
                         {"name", entity.Name},                    
                         {"made_in", entity.MadeIN},    
                         {"barcode", entity.Barcode},                    
@@ -57,10 +54,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public IList<Goods> GetByCountry(string countryName)
         {
             return base.ExecuteSelect(
-                    "select * from @tableName where made_id = @id",
+                    "select * from goods where made_id = @id",
                     new SqlParameters()                        
                     {
-                        {"tableName", tabelName},
                         {"id", countryName}
                     });
         }
@@ -68,10 +64,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public int GetCountByCountry(string countryName)
         {
             return base.ExecuteScalar<int>(
-                    "select count(*) from @tableName where made_id = @id",
+                    "select count(*) from goods where made_id = @id",
                     new SqlParameters()                        
                     {
-                        {"tableName", tabelName},
                         {"id", countryName}
                     });
         }
@@ -79,31 +74,24 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public Goods GetByBarcode(int barcode)
         {
             return base.ExecuteSingleRowSelect(
-                    "select * from @tableName where barcode = @id",
+                    "select * from goods where barcode = @id",
                     new SqlParameters()                        
                     {
-                        {"tableName", tabelName},
                         {"id", barcode}
                     });
         }
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>(
-                        "select count(*) from @tableName",
-                        new SqlParameters 
-                        { 
-                            {"tableName", tabelName}
-                        });
+            return base.ExecuteScalar<int>("select count(*) from goods");
         }
 
         public Goods GetByID(int id)
         {
             return base.ExecuteSingleRowSelect(
-                    "select * from @tableName where id = @id",
+                    "select * from goods where id = @id",
                     new SqlParameters()                        
                     {
-                        {"tableName", tabelName},
                         {"id", id}
                     });
         }
@@ -111,10 +99,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public bool Delete(int id)
         {
             var res = base.ExecuteNonQuery(
-                        "delete from @tableName where id = @id",
+                        "delete from goods where id = @id",
                         new SqlParameters()
                         {
-                            {"tableName", tabelName},
                             {"id", id}
                         });
 
@@ -128,12 +115,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public IList<Goods> GetAll()
         {
-            return base.ExecuteSelect(
-                "select * from @tableName",
-                new SqlParameters 
-                { 
-                    {"tableName", tabelName}
-                });
+            return base.ExecuteSelect("select * from goods");
         }
 
         protected override Goods DefaultRowMapping(NpgsqlDataReader reader)

@@ -12,8 +12,6 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class PaperFormatRepository : BaseRepository<int, PaperFormat>, IPaperFormatRepository
     {
-        private readonly string tabelName = "paper_format";
-
         public PaperFormatRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
         { 
@@ -21,27 +19,27 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public override int Save(PaperFormat entity)
         {
-            return (int)
-                base.ExecuteScalar<double>(
-                    @"insert into @tableName (id,name,size,price_of_one)
-                    values (@id,@name,@size,@price_of_one) SELECT SCOPE_IDENTITY()",
+            entity.Id =
+                base.ExecuteScalar<int>(
+                    @"insert into paper_format (name,size,price_of_one)
+                    values (@name,@size,@price_of_one) SELECT RETURNING id",
                     new SqlParameters                    
-                    {          
-                        {"tableName", tabelName},
-                        {"id", entity.Id},                    
+                    {                    
                         {"name", entity.Name},                    
                         {"size", entity.Size},
                         {"price_of_one", entity.PriceOfOne}
                     });
+
+            return entity.Id;
         }
 
         public override bool Update(PaperFormat entity)
         {
             var res = base.ExecuteNonQuery(
-            @"update @tableName set id=@id,name=@name,size=@size,price_of_one=@price_of_one",
+            @"update paper_format set name=@name,size=@size,price_of_one=@price_of_one
+                WHERE id=@id",
                 new SqlParameters
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", entity.Id},                    
                         {"name", entity.Name},                    
                         {"size", entity.Size},
@@ -53,21 +51,15 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>(
-                        "select count(*) from @tableName",
-                        new SqlParameters 
-                        { 
-                            {"tableName", tabelName}
-                        });
+            return base.ExecuteScalar<int>("select count(*) from paper_format");
         }
 
         public PaperFormat GetByID(int id)
         {
             return base.ExecuteSingleRowSelect(
-                    "select * from @tableName where id = @id",
+                    "select * from paper_format where id = @id",
                     new SqlParameters()                        
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", id}
                     });
         }
@@ -75,10 +67,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public bool Delete(int id)
         {
             var res = base.ExecuteNonQuery(
-                        "delete from @tableName where id = @id",
+                        "delete from paper_format where id = @id",
                         new SqlParameters()
-                        {
-                            {"tableName", tabelName},
+                        {                             
                             {"id", id}
                         });
 
@@ -92,12 +83,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public IList<PaperFormat> GetAll()
         {
-            return base.ExecuteSelect(
-                "select * from @tableName",
-                new SqlParameters 
-                { 
-                    {"tableName", tabelName}
-                });
+            return base.ExecuteSelect("select * from paper_format");
         }
 
         protected override PaperFormat DefaultRowMapping(NpgsqlDataReader reader)

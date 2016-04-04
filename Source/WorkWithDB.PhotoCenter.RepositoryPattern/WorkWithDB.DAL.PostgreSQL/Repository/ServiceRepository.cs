@@ -13,8 +13,6 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class ServiceRepository : BaseRepository<int, Service>, IServiceRepository
     {
-        private readonly string tabelName = "service";
-
         public ServiceRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
         { 
@@ -22,26 +20,26 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public override int Save(Service entity)
         {
-            return (int)
-                base.ExecuteScalar<double>(
-                    @"insert into @tableName (id,order_id,type)
-                    values (@id,@order_id,@type) SELECT SCOPE_IDENTITY()",
+            entity.Id =
+                base.ExecuteScalar<int>(
+                    @"insert into service (order_id,type)
+                    values (@order_id,@type) SELECT RETURNING id",
                     new SqlParameters                    
-                    {          
-                        {"tableName", tabelName},
-                        {"id", entity.Id},                    
+                    {                      
                         {"order_id", entity.Order.Id},                    
                         {"type", entity.Type}                   
                     });
+
+            return entity.Id;
         }
 
         public override bool Update(Service entity)
         {
             var res = base.ExecuteNonQuery(
-            @"update @tableName set id=@id,order_id=@order_id,type=@type",
+            @"update service set order_id=@order_id,type=@type
+                WHERE id=@id",
                 new SqlParameters
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", entity.Id},                    
                         {"order_id", entity.Order.Id},                    
                         {"type", entity.Type}   
@@ -52,21 +50,15 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>(
-                        "select count(*) from @tableName",
-                        new SqlParameters 
-                        { 
-                            {"tableName", tabelName}
-                        });
+            return base.ExecuteScalar<int>("select count(*) from service");
         }
 
         public Service GetByID(int id)
         {
             return base.ExecuteSingleRowSelect(
-                    "select * from @tableName where id = @id",
+                    "select * from service where id = @id",
                     new SqlParameters()                        
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", id}
                     });
         }
@@ -74,10 +66,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public bool Delete(int id)
         {
             var res = base.ExecuteNonQuery(
-                        "delete from @tableName where id = @id",
+                        "delete from service where id = @id",
                         new SqlParameters()
-                        {
-                            {"tableName", tabelName},
+                        {                             
                             {"id", id}
                         });
 
@@ -91,12 +82,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public IList<Service> GetAll()
         {
-            return base.ExecuteSelect(
-                "select * from @tableName",
-                new SqlParameters 
-                { 
-                    {"tableName", tabelName}
-                });
+            return base.ExecuteSelect("select * from service");
         }
 
         protected override Service DefaultRowMapping(NpgsqlDataReader reader)

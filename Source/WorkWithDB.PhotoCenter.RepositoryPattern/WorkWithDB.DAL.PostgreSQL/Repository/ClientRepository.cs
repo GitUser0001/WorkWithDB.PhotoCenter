@@ -13,39 +13,36 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class ClientRepository : BaseRepository<int, Client>, IClientRepository
     {
-        private readonly string tabelName = "client";
-
         public ClientRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
         {
         }
 
-
         public override int Save(Client entity)
         {
-            return (int)
-                base.ExecuteScalar<double>(
-                    @"insert into @tableName (id,registration_date,card_id,full_name,is_profesional)
-                    values (@id,@registration_date,@card_id,@full_name,@is_profesional) SELECT SCOPE_IDENTITY()",
+            entity.Id =
+                base.ExecuteScalar<int>(
+                    @"insert into client (registration_date,card_id,full_name,is_profesional)
+                    values (@registration_date,@card_id,@full_name,@is_profesional) RETURNING id",
                     new SqlParameters                    
-                    {          
-                        {"tableName", tabelName},
-                        {"id", entity.Id},
+                    {
                         {"registration_date", entity.RegistrationDate},                    
                         {"card_id", entity.DiscountCard.Id},                    
                         {"full_name", entity.FullName},    
                         {"is_profesional", entity.IsProfesional},                                   
                     });
+
+            return entity.Id;
         }
 
         public override bool Update(Client entity)
         {
             var res = base.ExecuteNonQuery(
-            @"update @tableName set id=@id,registration_date=@registration_date,
-                                card_id=@card_id,full_name=@full_name,is_profesional=@is_profesional",
+            @"update client set registration_date=@registration_date,
+                                card_id=@card_id,full_name=@full_name,is_profesional=@is_profesional
+                                WHERE  id=@id",
                 new SqlParameters
                     {
-                        {"tableName", tabelName},
                         {"id", entity.Id},
                         {"registration_date", entity.RegistrationDate},                    
                         {"card_id", entity.DiscountCard.Id},                    
@@ -58,21 +55,15 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>(
-                        "select count(*) from @tableName",
-                        new SqlParameters 
-                        { 
-                            {"tableName", tabelName}
-                        });
+            return base.ExecuteScalar<int>("select count(*) from client");
         }
 
         public Client GetByID(int id)
         {
             return base.ExecuteSingleRowSelect(
-                    "select * from @tableName where id = @id",
+                    "select * from client where id = @id",
                     new SqlParameters()                        
                     {
-                        {"tableName", tabelName},
                         {"id", id}
                     });
         }
@@ -80,10 +71,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public bool Delete(int id)
         {
             var res = base.ExecuteNonQuery(
-                        "delete from @tableName where id = @id",
+                        "delete from client where id = @id",
                         new SqlParameters()
                         {
-                            {"tableName", tabelName},
                             {"id", id}
                         });
 
@@ -97,12 +87,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public IList<Client> GetAll()
         {
-            return base.ExecuteSelect(
-                "select * from @tableName",
-                new SqlParameters 
-                { 
-                    {"tableName", tabelName}
-                });
+            return base.ExecuteSelect("select * from client");
         }
 
         protected override Client DefaultRowMapping(NpgsqlDataReader reader)

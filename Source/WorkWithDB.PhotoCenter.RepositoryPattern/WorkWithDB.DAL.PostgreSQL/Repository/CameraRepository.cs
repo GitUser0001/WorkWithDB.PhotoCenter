@@ -12,24 +12,19 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class CameraRepository : BaseRepository<int, Camera>, ICameraRepository
     {
-        private readonly string tabelName = "cameras";
-
         public CameraRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
         { 
         }
 
-
         public override int Save(Camera entity)
         {
-            return (int)
-                base.ExecuteScalar<double>(
-                    @"insert into @tableName (id,date_of_issue,resolution,model,cost_hour,firm,made_in)
-                    values (@id,@date_of_issue,@resolution,@model,@cost_hour,@firm,@made_in) SELECT SCOPE_IDENTITY()",
+            entity.Id =
+                base.ExecuteScalar<int>(
+                    @"insert into cameras (date_of_issue,resolution,model,cost_hour,firm,made_in)
+                    values (@date_of_issue,@resolution,@model,@cost_hour,@firm,@made_in) RETURNING id",
                     new SqlParameters                    
-                    {          
-                        {"tableName", tabelName},
-                        {"id", entity.Id},
+                    {
                         {"date_of_issue", entity.DateOfIssue},
                         {"resolution", entity.Resolution},
                         {"model", entity.Model},
@@ -37,16 +32,18 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
                         {"firm", entity.Firm},
                         {"made_in", entity.MadeIn}
                     });
+
+            return entity.Id;
         }
 
         public override bool Update(Camera entity)
         {
             var res = base.ExecuteNonQuery(
-            @"update @tableName set service_id = id=@id,date_of_issue=@date_of_issue,
-                resolution=@resolution,model=@model,cost_hour=@cost_hour,firm=@firm,made_in=@made_in",
+            @"update cameras set date_of_issue=@date_of_issue,
+                resolution=@resolution,model=@model,cost_hour=@cost_hour,firm=@firm,made_in=@made_in
+                WHERE id=@id",
                 new SqlParameters
                         {
-                            {"tableName", tabelName},
                             {"id", entity.Id},
                             {"date_of_issue", entity.DateOfIssue},
                             {"resolution", entity.Resolution},
@@ -61,21 +58,15 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>(
-                        "select count(*) from @tableName",
-                        new SqlParameters 
-                        { 
-                            {"tableName", tabelName}
-                        });
+            return base.ExecuteScalar<int>("select count(*) from cameras");
         }
 
         public Camera GetByID(int id)
         {
             return base.ExecuteSingleRowSelect(
-                    "select * from @tableName where id = @id",
+                    "select * from cameras where id = @id",
                     new SqlParameters()                        
                     {
-                        {"tableName", tabelName},
                         {"id", id}
                     });
         }
@@ -83,10 +74,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public bool Delete(int id)
         {
             var res = base.ExecuteNonQuery(
-                        "delete from @tableName where id = @id",
+                        "delete from cameras where id = @id",
                         new SqlParameters()
                         {
-                            {"tableName", tabelName},
                             {"id", id}
                         });
 
@@ -100,12 +90,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public IList<Camera> GetAll()
         {
-            return base.ExecuteSelect(
-                "select * from @tableName",
-                new SqlParameters 
-                { 
-                    {"tableName", tabelName}
-                });
+            return base.ExecuteSelect("select * from cameras");
         }
 
         protected override Camera DefaultRowMapping(NpgsqlDataReader reader)

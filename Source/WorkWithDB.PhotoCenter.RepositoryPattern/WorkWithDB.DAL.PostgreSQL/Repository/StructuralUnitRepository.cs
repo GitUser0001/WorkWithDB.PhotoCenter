@@ -12,8 +12,6 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class StructuralUnitRepository : BaseRepository<int, StructuralUnit>, IStructuralUnitRepository
     {
-        private readonly string tabelName = "structural_unit";
-
         public StructuralUnitRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
         {
@@ -21,29 +19,29 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public override int Save(StructuralUnit entity)
         {
-            return (int)
-                base.ExecuteScalar<double>(
-                    @"insert into @tableName (id,name,owner_info,adress,opening_date,jobs)
-                    values (@id,@name,@owner_info,@adress,@opening_date,@jobs) SELECT SCOPE_IDENTITY()",
+            entity.Id =
+                base.ExecuteScalar<int>(
+                    @"insert into structural_unit (name,owner_info,adress,opening_date,jobs)
+                    values (@name,@owner_info,@adress,@opening_date,@jobs) SELECT RETURNING id",
                     new SqlParameters                    
-                    {          
-                        {"tableName", tabelName},
-                        {"id", entity.Id},                    
+                    {                    
                         {"name", entity.Name},                    
                         {"owner_info", entity.OwnerInfo},    
                         {"adress", entity.Adress},                    
                         {"opening_date", entity.Opening_Date},                    
                         {"jobs", entity.Jobs}                
                     });
+
+            return entity.Id;
         }
 
         public override bool Update(StructuralUnit entity)
         {
             var res = base.ExecuteNonQuery(
-            @"update @tableName set id=@id,name=@name,owner_info=@owner_info,adress=@adress,opening_date=@opening_date,jobs=@jobs",
+            @"update structural_unit set name=@name,owner_info=@owner_info,adress=@adress,opening_date=@opening_date,jobs=@jobs
+                WHERE id=@id",
                 new SqlParameters
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", entity.Id},                    
                         {"name", entity.Name},                    
                         {"owner_info", entity.OwnerInfo},    
@@ -57,21 +55,15 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>(
-                        "select count(*) from @tableName",
-                        new SqlParameters 
-                        { 
-                            {"tableName", tabelName}
-                        });
+            return base.ExecuteScalar<int>("select count(*) from structural_unit");
         }
 
         public StructuralUnit GetByID(int id)
         {
             return base.ExecuteSingleRowSelect(
-                    "select * from @tableName where id = @id",
+                    "select * from structural_unit where id = @id",
                     new SqlParameters()                        
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", id}
                     });
         }
@@ -79,10 +71,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public bool Delete(int id)
         {
             var res = base.ExecuteNonQuery(
-                        "delete from @tableName where id = @id",
+                        "delete from structural_unit where id = @id",
                         new SqlParameters()
-                        {
-                            {"tableName", tabelName},
+                        {                             
                             {"id", id}
                         });
 
@@ -96,12 +87,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public IList<StructuralUnit> GetAll()
         {
-            return base.ExecuteSelect(
-                "select * from @tableName",
-                new SqlParameters 
-                { 
-                    {"tableName", tabelName}
-                });
+            return base.ExecuteSelect("select * from structural_unit");
         }
 
         protected override StructuralUnit DefaultRowMapping(NpgsqlDataReader reader)

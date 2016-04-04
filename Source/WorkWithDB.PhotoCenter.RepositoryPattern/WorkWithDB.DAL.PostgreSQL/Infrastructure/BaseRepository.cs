@@ -38,6 +38,10 @@ namespace WorkWithDB.DAL.PostgreSQL.Infrastructure
             }
         }
 
+        /// <summary>
+        /// Сохраняет екземпляр сущности и возвращает его ID
+        /// </summary>
+        /// <returns>Возврашает ID сущности</returns>
         public abstract Tkey Save(TEntity entity);
         public abstract bool Update(TEntity entity);
 
@@ -65,6 +69,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Infrastructure
             using (NpgsqlCommand command = new NpgsqlCommand(sql, _connection, _transaction))
             {
                 FillParameters(parameters, command);
+            //    command.Prepare();
 
                 return command.ExecuteNonQuery();
             }

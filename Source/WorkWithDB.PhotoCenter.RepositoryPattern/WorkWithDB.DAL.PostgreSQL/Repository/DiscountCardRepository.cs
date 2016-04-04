@@ -12,8 +12,6 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class DiscountCardRepository : BaseRepository<int, DiscountCard>, IDiscountCardRepository
     {
-        private readonly string tabelName = "dicount_card";
-
         public DiscountCardRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
         { 
@@ -21,28 +19,28 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public override int Save(DiscountCard entity)
         {
-            return (int)
-                base.ExecuteScalar<double>(
-                    @"insert into @tableName (id,type_name,discount,code,is_personal)
-                    values (@id,@type_name,@discount,@code,@is_personal) SELECT SCOPE_IDENTITY()",
+            entity.Id =
+                base.ExecuteScalar<int>(
+                    @"insert into dicount_card (type_name,discount,code,is_personal)
+                    values (@type_name,@discount,@code,@is_personal) SELECT RETURNING id",
                     new SqlParameters                    
-                    {          
-                        {"tableName", tabelName},
-                        {"id", entity.Id},                    
+                    {                      
                         {"type_name", entity.TypeName},                    
                         {"discount", entity.Discount},    
                         {"code", entity.Code},                    
                         {"is_personal", entity.IsPersonal}           
                     });
+
+            return entity.Id;
         }
 
         public override bool Update(DiscountCard entity)
         {
             var res = base.ExecuteNonQuery(
-            @"update @tableName set id=@id,type_name=@type_name,discount=@discount,code=@code,is_personal=@is_personal",
+            @"update dicount_card set type_name=@type_name,discount=@discount,code=@code,is_personal=@is_personal
+                WHERE id=@id",
                 new SqlParameters
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", entity.Id},                    
                         {"type_name", entity.TypeName},                    
                         {"discount", entity.Discount},    
@@ -55,21 +53,15 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>(
-                        "select count(*) from @tableName",
-                        new SqlParameters 
-                        { 
-                            {"tableName", tabelName}
-                        });
+            return base.ExecuteScalar<int>("select count(*) from dicount_card");
         }
 
         public DiscountCard GetByID(int id)
         {
             return base.ExecuteSingleRowSelect(
-                    "select * from @tableName where id = @id",
+                    "select * from dicount_card where id = @id",
                     new SqlParameters()                        
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", id}
                     });
         }
@@ -77,10 +69,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public bool Delete(int id)
         {
             var res = base.ExecuteNonQuery(
-                        "delete from @tableName where id = @id",
+                        "delete from dicount_card where id = @id",
                         new SqlParameters()
-                        {
-                            {"tableName", tabelName},
+                        {                             
                             {"id", id}
                         });
 
@@ -94,12 +85,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public IList<DiscountCard> GetAll()
         {
-            return base.ExecuteSelect(
-                "select * from @tableName",
-                new SqlParameters 
-                { 
-                    {"tableName", tabelName}
-                });
+            return base.ExecuteSelect("select * from dicount_card");
         }
 
         protected override DiscountCard DefaultRowMapping(NpgsqlDataReader reader)

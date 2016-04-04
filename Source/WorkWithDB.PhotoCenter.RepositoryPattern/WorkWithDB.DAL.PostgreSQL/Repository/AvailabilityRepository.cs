@@ -13,8 +13,6 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class AvailabilityRepository : BaseRepository<int, Availability>, IAvailabilityRepository
     {
-        private readonly string tabelName = "availability";
-
         public AvailabilityRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
         {
@@ -22,26 +20,28 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public override int Save(Availability entity)
         {
-            return (int)
-                base.ExecuteScalar<double>(
-                    @"insert into @tableName (goods_id,count,structural_unit_id) values (@goods_id,@count,@structural_unit_id) 
-                    SELECT SCOPE_IDENTITY()",
+            entity.Id =
+                base.ExecuteScalar<int>(
+                    @"insert into availability (goods_id,count,structural_unit_id) 
+                        values (@goods_id,@count,@structural_unit_id) RETURNING id",
                     new SqlParameters                    
                     {               
-                        {"tableName", tabelName},
                         {"goods_id", entity.Goods.Id},                    
                         {"count", entity.Count},                    
                         {"structural_unit_id", entity.SrtucturalUnit.Id}                    
                     });
+
+            return entity.Id;
         }
 
         public override bool Update(Availability entity)
         {
             var res = base.ExecuteNonQuery(
-                        "update @tableName set goods_id = @goods_id, count = @count, structural_unit_id = @structural_unit_id",
+                        @"update availability set goods_id = @goods_id, count = @count, structural_unit_id = @structural_unit_id
+                            WHERE id = @id;",
                         new SqlParameters
                         {
-                            {"tableName", tabelName},
+                            {"id", entity.Id},
                             {"goods_id", entity.Goods.Id},                    
                             {"count", entity.Count},                    
                             {"structural_unit_id", entity.SrtucturalUnit.Id}  
@@ -52,21 +52,15 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>(
-                        "select count(*) from @tableName", 
-                        new SqlParameters 
-                        { 
-                            {"tableName", tabelName}
-                        });
+            return base.ExecuteScalar<int>("select count(*) from availability");
         }
 
         public Availability GetByID(int id)
         {
             return base.ExecuteSingleRowSelect(
-                    "select * from @tableName where id = @id",
+                    "select * from availability where id = @id",
                     new SqlParameters()                        
                     {
-                        {"tableName", tabelName},
                         {"id", id}
                     });
         }
@@ -74,10 +68,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public IList<Availability> GetByGoodsID(int goodsId)
         {
             return base.ExecuteSelect(
-                    "select * from @tableName where goods_id = @id",
+                    "select * from availability where goods_id = @id",
                     new SqlParameters()                        
                     {
-                        {"tableName", tabelName},
                         {"id", goodsId}
                     });
         }
@@ -85,10 +78,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public IList<Availability> GetBySrtUnitID(int strUnitId)
         {
             return base.ExecuteSelect(
-                    "select * from @tableName where structural_unit_id = @id",
+                    "select * from availability where structural_unit_id = @id",
                     new SqlParameters()                        
-                    {            
-                        {"tableName", tabelName},
+                    {
                         {"id", strUnitId}
                     });
         }
@@ -96,10 +88,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public bool Delete(int id)
         {
             var res = base.ExecuteNonQuery(
-                        "delete from @tableName where id = @id",
+                        "delete from availability where id = @id",
                         new SqlParameters()
                         {
-                            {"tableName", tabelName},
                             {"id", id}
                         });
 
@@ -114,12 +105,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public IList<Availability> GetAll()
         {
-            return base.ExecuteSelect(
-                    "select * from @tableName",
-                        new SqlParameters 
-                        { 
-                            {"tableName", tabelName}
-                        });
+            return base.ExecuteSelect("select * from availability");
         }
 
         protected override Availability DefaultRowMapping(Npgsql.NpgsqlDataReader reader)

@@ -12,8 +12,6 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class PhotographerRepository : BaseRepository<int, Photographer>, IPhotographerRepository
     {
-        private readonly string tabelName = "photographer";
-
         public PhotographerRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
         {
@@ -21,26 +19,26 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         
         public override int Save(Photographer entity)
         {
-            return (int)
-                base.ExecuteScalar<double>(
-                    @"insert into @tableName (id,info,photo_price)
-                    values (@id,@info,@photo_price) SELECT SCOPE_IDENTITY()",
+            entity.Id =
+                base.ExecuteScalar<int>(
+                    @"insert into photographer (info,photo_price)
+                    values (@info,@photo_price) SELECT RETURNING id",
                     new SqlParameters                    
-                    {          
-                        {"tableName", tabelName},
-                        {"id", entity.Id},                    
+                    {                  
                         {"info", entity.Info},                    
                         {"photo_price", entity.PhotoPrice}                   
                     });
+
+            return entity.Id;
         }
 
         public override bool Update(Photographer entity)
         {
             var res = base.ExecuteNonQuery(
-            @"update @tableName set id=@id,info=@info,photo_price=@photo_price",
+            @"update photographer set info=@info,photo_price=@photo_price
+                WHERE id=@id",
                 new SqlParameters
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", entity.Id},                    
                         {"info", entity.Info},                    
                         {"photo_price", entity.PhotoPrice}
@@ -51,21 +49,15 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>(
-                        "select count(*) from @tableName",
-                        new SqlParameters 
-                        { 
-                            {"tableName", tabelName}
-                        });
+            return base.ExecuteScalar<int>("select count(*) from photographer");
         }
 
         public Photographer GetByID(int id)
         {
             return base.ExecuteSingleRowSelect(
-                    "select * from @tableName where id = @id",
+                    "select * from photographer where id = @id",
                     new SqlParameters()                        
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", id}
                     });
         }
@@ -73,10 +65,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public bool Delete(int id)
         {
             var res = base.ExecuteNonQuery(
-                        "delete from @tableName where id = @id",
+                        "delete from photographer where id = @id",
                         new SqlParameters()
-                        {
-                            {"tableName", tabelName},
+                        {                             
                             {"id", id}
                         });
 
@@ -90,12 +81,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public IList<Photographer> GetAll()
         {
-            return base.ExecuteSelect(
-                "select * from @tableName",
-                new SqlParameters 
-                { 
-                    {"tableName", tabelName}
-                });
+            return base.ExecuteSelect("select * from photographer");
         }
 
         protected override Photographer DefaultRowMapping(NpgsqlDataReader reader)

@@ -13,8 +13,6 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class DisplayOfPhotoRepository : BaseRepository<int, DisplayOfPhoto>, IDisplayOfPhotoRepository
     {
-        private readonly string tabelName = "display_of_photo";
-
         public DisplayOfPhotoRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
         { 
@@ -22,29 +20,31 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public override int Save(DisplayOfPhoto entity)
         {
-            return (int)
-                base.ExecuteNonQuery(
-                    @"insert into @tableName (service_id,price,is_we_sold,film_type_id,is_immediately)
-                    values (@service_id,@price,@is_we_sold,@film_type_id,@is_immediately) SELECT SCOPE_IDENTITY()",
+            entity.Id =
+                base.ExecuteScalar<int>(
+                    @"insert into display_of_photo (service_id,price,is_we_sold,film_type_id,is_immediately)
+                    values (@service_id,@price,@is_we_sold,@film_type_id,@is_immediately) SELECT RETURNING id",
                     new SqlParameters                    
-                    {          
-                        {"tableName", tabelName},
+                    {                    
                         {"service_id", entity.ServiceID},                    
                         {"price", entity.Price},                    
                         {"is_we_sold", entity.IsWeSold},    
                         {"film_type_id", entity.FilmType.Id},                    
                         {"is_immediately", entity.IsImmediatelly},                                    
                     });
+
+            return entity.Id;
         }
 
         public override bool Update(DisplayOfPhoto entity)
         {
             var res = base.ExecuteNonQuery(
-            @"update @tableName set service_id=@service_id,price=@price,is_we_sold=@is_we_sold,
-                                    film_type_id=@film_type_id,is_immediately=@is_immediately",
+            @"update display_of_photo set service_id=@service_id,price=@price,is_we_sold=@is_we_sold,
+                                    film_type_id=@film_type_id,is_immediately=@is_immediately
+                                    WHERE id = @id",
                 new SqlParameters
-                    {
-                        {"tableName", tabelName},
+                    {       
+                        {"id", entity.Id},
                         {"service_id", entity.ServiceID},                    
                         {"price", entity.Price},                    
                         {"is_we_sold", entity.IsWeSold},    
@@ -57,21 +57,15 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>(
-                        "select count(*) from @tableName",
-                        new SqlParameters 
-                        { 
-                            {"tableName", tabelName}
-                        });
+            return base.ExecuteScalar<int>("select count(*) from display_of_photo");
         }
 
         public DisplayOfPhoto GetByID(int id)
         {
             return base.ExecuteSingleRowSelect(
-                    "select * from @tableName where service_id = @id",
+                    "select * from display_of_photo where id = @id",
                     new SqlParameters()                        
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", id}
                     });
         }
@@ -79,10 +73,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public bool Delete(int id)
         {
             var res = base.ExecuteNonQuery(
-                        "delete from @tableName where service_id = @id",
+                        "delete from display_of_photo where id = @id",
                         new SqlParameters()
-                        {
-                            {"tableName", tabelName},
+                        {                             
                             {"id", id}
                         });
 
@@ -96,12 +89,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public IList<DisplayOfPhoto> GetAll()
         {
-            return base.ExecuteSelect(
-                "select * from @tableName",
-                new SqlParameters 
-                { 
-                    {"tableName", tabelName}
-                });
+            return base.ExecuteSelect("select * from display_of_photo");
         }
 
         protected override DisplayOfPhoto DefaultRowMapping(NpgsqlDataReader reader)

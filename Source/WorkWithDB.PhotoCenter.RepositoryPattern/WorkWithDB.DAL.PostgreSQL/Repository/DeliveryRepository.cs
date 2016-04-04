@@ -13,8 +13,6 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class DeliveryRepository : BaseRepository<int, Delivery>, IDeliveryRepository
     {
-        private readonly string tabelName = "delivery";
-
         public DeliveryRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
         { 
@@ -22,29 +20,29 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public override int Save(Delivery entity)
         {
-            return (int)
-                base.ExecuteScalar<double>(
-                    @"insert into @tableName (id, date_order,date_import,structural_unit_id,provider_id)
-                    values (@id,@date_order,@date_import,@structural_unit_id,@provider_id) SELECT SCOPE_IDENTITY()",
+            entity.Id =
+                base.ExecuteScalar<int>(
+                    @"insert into delivery (date_order,date_import,structural_unit_id,provider_id)
+                    values (@date_order,@date_import,@structural_unit_id,@provider_id) SELECT RETURNING id",
                     new SqlParameters                    
-                    {          
-                        {"tableName", tabelName},
-                        {"id", entity.Id},                    
+                    {                   
                         {"date_order", entity.Date_order},    
                         {"date_import", entity.Date_import},
                         {"structural_unit_id", entity.StructuralUnit.Id},    
                         {"provider_id", entity.Provider.Id}                                   
                     });
+
+            return entity.Id;
         }
 
         public override bool Update(Delivery entity)
         {
             var res = base.ExecuteNonQuery(
-            @"update @tableName set id=@id,date_order=@date_order,date_import=@date_import,
-                                    structural_unit_id=@structural_unit_id,provider_id=@provider_id",
+            @"update delivery set date_order=@date_order,date_import=@date_import,
+                                    structural_unit_id=@structural_unit_id,provider_id=@provider_id
+                            WHERE id=@id",
                 new SqlParameters
-                     {
-                        {"tableName", tabelName},
+                     {                         
                         {"id", entity.Id},                    
                         {"date_order", entity.Date_import},                    
                         {"structural_unit_id", entity.StructuralUnit.Id},    
@@ -56,21 +54,15 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>(
-            "select count(*) from @tableName",
-            new SqlParameters 
-                        { 
-                            {"tableName", tabelName}
-                        });
+            return base.ExecuteScalar<int>("select count(*) from delivery");
         }
 
         public Delivery GetByID(int id)
         {
             return base.ExecuteSingleRowSelect(
-                    "select * from @tableName where id = @id",
+                    "select * from delivery where id = @id",
                     new SqlParameters()                        
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", id}
                     });
         }
@@ -78,10 +70,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public bool Delete(int id)
         {
             var res = base.ExecuteNonQuery(
-                        "delete from @tableName where id = @id",
+                        "delete from delivery where id = @id",
                         new SqlParameters()
-                        {
-                            {"tableName", tabelName},
+                        {                             
                             {"id", id}
                         });
 
@@ -95,12 +86,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public IList<Delivery> GetAll()
         {
-            return base.ExecuteSelect(
-                "select * from @tableName",
-                new SqlParameters 
-                { 
-                    {"tableName", tabelName}
-                });
+            return base.ExecuteSelect("select * from delivery");
         }
 
         protected override Delivery DefaultRowMapping(NpgsqlDataReader reader)

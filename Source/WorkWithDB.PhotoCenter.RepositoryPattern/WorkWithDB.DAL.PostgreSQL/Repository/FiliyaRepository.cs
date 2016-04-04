@@ -12,7 +12,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class FiliyaRepository : BaseRepository<int, Filiya>, IFiliyaRepository
     {
-        private readonly string tabelName = "\"BD_LAB\".\"filiya\"";
+        private readonly string tabelName = "filiya";
 
         public FiliyaRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
@@ -21,26 +21,26 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public override int Save(Filiya entity)
         {
-            return (int)
-            base.ExecuteNonQuery(
-                    "insert into \"BD_LAB\".\"filiya\" (\"id\",\"structural_unit_id\") values (@id, @stUnitID)",
+            entity.Id =
+            base.ExecuteScalar<int>(
+                    "insert into filiya (structural_unit_id) values (@stUnitID) RETURNING id",
                     new SqlParameters
-                    {          
-                        //{"tableName", tabelName},
-                        {"stUnitID", entity.StructureUnitID},
-                        {"id", entity.Id},                                   
+                    {
+                        {"stUnitID", entity.StructureUnitID},                               
                     });
-            //return 1;
+
+            return entity.Id;
         }
 
         public override bool Update(Filiya entity)
         {
             var res = base.ExecuteNonQuery(
-            @"update @tableName set id=@id",
+            @"update filiya set structural_unit_id=@st_unit_id
+                WHERE id=@id",
                 new SqlParameters
                     {
-                        {"tableName", tabelName},
-                        {"id", entity.StructureUnitID},        
+                        {"id", entity.Id},
+                        {"st_unit_id", entity.StructureUnitID},        
                     });
 
             return res > 0;
@@ -48,21 +48,15 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>(
-                        "select count(*) from @tableName",
-                        new SqlParameters 
-                        { 
-                            {"tableName", tabelName}
-                        });
+            return base.ExecuteScalar<int>("select count(*) from filiya");
         }
 
         public Filiya GetByID(int id)
         {
             return base.ExecuteSingleRowSelect(
-                    "select * from @tableName where service_id = @id",
+                    "select * from filiya where id = @id",
                     new SqlParameters()                        
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", id}
                     });
         }
@@ -70,10 +64,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public bool Delete(int id)
         {
             var res = base.ExecuteNonQuery(
-                        "delete from @tableName where service_id = @id",
+                        "delete from filiya where id = @id",
                         new SqlParameters()
-                        {
-                            {"tableName", tabelName},
+                        {                             
                             {"id", id}
                         });
 
@@ -87,12 +80,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public IList<Filiya> GetAll()
         {
-            return base.ExecuteSelect(
-                "select * from @tableName",
-                new SqlParameters 
-                { 
-                    {"tableName", tabelName}
-                });
+            return base.ExecuteSelect("select * from filiya");
         }
         
         protected override Filiya DefaultRowMapping(NpgsqlDataReader reader)

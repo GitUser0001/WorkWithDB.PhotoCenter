@@ -13,8 +13,6 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class KioskRepository : BaseRepository<int, Kiosk>, IKioskRepository
     {
-        private readonly string tabelName = "kiosk";
-
         public KioskRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
         {
@@ -22,25 +20,27 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public override int Save(Kiosk entity)
         {
-            return (int)
-                base.ExecuteScalar<double>(
-                    @"insert into @tableName (structure_unit_id, filiya_id)
-                    values (@structure_unit_id,@filiya_id) SELECT SCOPE_IDENTITY()",
+            entity.Id =
+                base.ExecuteScalar<int>(
+                    @"insert into kiosk (structure_unit_id, filiya_id)
+                    values (@structure_unit_id,@filiya_id) SELECT RETURNING id",
                     new SqlParameters                    
-                    {          
-                        {"tableName", tabelName},
+                    {
                         {"structure_unit_id", entity.StructureUnitID},                    
                         {"filiya_id", entity.Filiya.StructureUnitID},                                    
                     });
+
+            return entity.Id;
         }
 
         public override bool Update(Kiosk entity)
         {
             var res = base.ExecuteNonQuery(
-            @"update @tableName set structure_unit_id=@structure_unit_id,filiya_id=@filiya_id",
+            @"update kiosk set structure_unit_id=@structure_unit_id,filiya_id=@filiya_id
+                WHERE id=@id",
                 new SqlParameters
                     {
-                        {"tableName", tabelName},
+                        {"id", entity.Id},
                         {"structure_unit_id", entity.StructureUnitID},                    
                         {"filiya_id", entity.Filiya.StructureUnitID},    
                     });
@@ -50,21 +50,25 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>(
-                        "select count(*) from @tableName",
-                        new SqlParameters 
-                        { 
-                            {"tableName", tabelName}
-                        });
+            return base.ExecuteScalar<int>("select count(*) from kiosk");
         }
 
         public Kiosk GetByID(int id)
         {
             return base.ExecuteSingleRowSelect(
-                    "select * from @tableName where structure_unit_id = @id",
+                    "select * from kiosk where id = @id",
                     new SqlParameters()                        
-                    {
-                        {"tableName", tabelName},
+                    {                         
+                        {"id", id}
+                    });
+        }
+
+        public Kiosk GetByStructUnitID(int id)
+        {
+            return base.ExecuteSingleRowSelect(
+                    "select * from kiosk where structure_unit_id = @id",
+                    new SqlParameters()                        
+                    {                         
                         {"id", id}
                     });
         }
@@ -72,10 +76,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public bool Delete(int id)
         {
             var res = base.ExecuteNonQuery(
-                        "delete from @tableName where structure_unit_id = @id",
+                        "delete from kiosk where id = @id",
                         new SqlParameters()
-                        {
-                            {"tableName", tabelName},
+                        {                             
                             {"id", id}
                         });
 
@@ -89,12 +92,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public IList<Kiosk> GetAll()
         {
-            return base.ExecuteSelect(
-                "select * from @tableName",
-                new SqlParameters 
-                { 
-                    {"tableName", tabelName}
-                });
+            return base.ExecuteSelect("select * from kiosk");
         }
 
         protected override Kiosk DefaultRowMapping(NpgsqlDataReader reader)
@@ -103,6 +101,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
             {
                 return new Kiosk
                 {
+                    Id = (int)reader["id"],
                     StructureUnitID = (int)reader["structure_unit_id"],
                     Filiya = unitOfWork.FiliyaRepository.GetByID((int)reader["filiya_id"])
                 };

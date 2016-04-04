@@ -12,8 +12,6 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class GoodsSoldRepository : BaseRepository<int, GoodsSold>, IGoodsSoldRepository
     {
-        private readonly string tabelName = "goods_sold";
-
         public GoodsSoldRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
         { 
@@ -21,27 +19,29 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public override int Save(GoodsSold entity)
         {
-            return (int)
-                base.ExecuteScalar<double>(
-                    @"insert into @tableName (goods_id,service_id,sold_count,price)
-                    values (@goods_id,@service_id,@sold_count,@price) SELECT SCOPE_IDENTITY()",
+            entity.Id =
+                base.ExecuteScalar<int>(
+                    @"insert into goods_sold (goods_id,service_id,sold_count,price)
+                    values (@goods_id,@service_id,@sold_count,@price) SELECT RETURNING id",
                     new SqlParameters                    
-                    {          
-                        {"tableName", tabelName},
+                    {                                   
                         {"goods_id", entity.GoodsID},                    
                         {"service_id", entity.ServiceID},                    
                         {"sold_count", entity.SoldCount},    
                         {"price", entity.Price}                
                     });
+
+            return entity.Id;
         }
 
         public override bool Update(GoodsSold entity)
         {
             var res = base.ExecuteNonQuery(
-            @"update @tableName set goods_id=@goods_id,service_id=@service_id,sold_count=@sold_count,price=@price",
+            @"update goods_sold set goods_id=@goods_id,service_id=@service_id,sold_count=@sold_count,price=@price
+                WHERE id=@id",
                 new SqlParameters
                     {
-                        {"tableName", tabelName},
+                        {"id", entity.Id},
                         {"goods_id", entity.GoodsID},                    
                         {"service_id", entity.ServiceID},                    
                         {"sold_count", entity.SoldCount},    
@@ -53,37 +53,42 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>(
-                        "select count(*) from @tableName",
-                        new SqlParameters 
-                        { 
-                            {"tableName", tabelName}
-                        });
+            return base.ExecuteScalar<int>("select count(*) from goods_sold");
         }
 
         public GoodsSold GetByID(int id)
         {
             return base.ExecuteSingleRowSelect(
-                    "select * from @tableName where service_id = @id",
+                    "select * from goods_sold where id = @id",
                     new SqlParameters()                        
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", id}
                     });
         }
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            var res = base.ExecuteNonQuery(
+            "delete from goods_sold where id = @id",
+            new SqlParameters()
+                        {
+                            {"id", id}
+                        });
+
+            if (res > 1)
+            {
+                throw new InvalidOperationException("Multiple rows deleted by single delete query");
+            }
+
+            return res == 1;
         }
 
         public bool Delete(int goodsId, int serviceId)
         {
             var res = base.ExecuteNonQuery(
-                        "delete from @tableName where service_id = @serviceId AND goods_id = @goodsId",
+                        "delete from goods_sold where service_id = @serviceId AND goods_id = @goodsId",
                         new SqlParameters()
-                        {
-                            {"tableName", tabelName},
+                        {                             
                             {"serviceId", goodsId},
                             {"goodsId", serviceId}
                         });
@@ -98,18 +103,14 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public IList<GoodsSold> GetAll()
         {
-            return base.ExecuteSelect(
-                "select * from @tableName",
-                new SqlParameters 
-                { 
-                    {"tableName", tabelName}
-                });
+            return base.ExecuteSelect("select * from goods_sold");
         }
 
         protected override GoodsSold DefaultRowMapping(NpgsqlDataReader reader)
         {
             return new GoodsSold
             {
+                Id = (int)reader["id"],
                 ServiceID = (int)reader["service_id"],
                 GoodsID = (int)reader["goods_id"],
                 Price = (int)reader["price"],

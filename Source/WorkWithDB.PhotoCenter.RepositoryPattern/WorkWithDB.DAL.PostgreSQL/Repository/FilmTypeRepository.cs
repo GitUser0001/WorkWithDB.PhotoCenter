@@ -12,8 +12,6 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class FilmTypeRepository : BaseRepository<int, FilmType>, IFilmTypeRepository
     {
-        private readonly string tabelName = "film_type";
-
         public FilmTypeRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
         { 
@@ -21,27 +19,27 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public override int Save(FilmType entity)
         {
-            return (int)
-                base.ExecuteScalar<double>(
-                    @"insert into @tableName (id,name,length,price)
-                    values (@id,@name,@length,@price) SELECT SCOPE_IDENTITY()",
+            entity.Id =
+                base.ExecuteScalar<int>(
+                    @"insert into film_type (name,length,price)
+                    values (@name,@length,@price) SELECT RETURNING id",
                     new SqlParameters                    
-                    {          
-                        {"tableName", tabelName},
-                        {"id", entity.Id},                    
+                    {                   
                         {"name", entity.Name},                    
                         {"length", entity.Lenght},
                         {"price", entity.Price}
                     });
+
+            return entity.Id;
         }
 
         public override bool Update(FilmType entity)
         {
             var res = base.ExecuteNonQuery(
-            @"update @tableName set id=@id,name=@name,length=@length,price=@price",
+            @"update film_type set name=@name,length=@length,price=@price
+                WHERE id=@id",
                 new SqlParameters
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", entity.Id},                    
                         {"name", entity.Name},                    
                         {"length", entity.Lenght},
@@ -53,21 +51,15 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>(
-                        "select count(*) from @tableName",
-                        new SqlParameters 
-                        { 
-                            {"tableName", tabelName}
-                        });
+            return base.ExecuteScalar<int>("select count(*) from film_type");
         }
 
         public FilmType GetByID(int id)
         {
             return base.ExecuteSingleRowSelect(
-                    "select * from @tableName where id = @id",
+                    "select * from film_type where id = @id",
                     new SqlParameters()                        
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", id}
                     });
         }
@@ -75,10 +67,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public bool Delete(int id)
         {
             var res = base.ExecuteNonQuery(
-                        "delete from @tableName where id = @id",
+                        "delete from film_type where id = @id",
                         new SqlParameters()
-                        {
-                            {"tableName", tabelName},
+                        {                             
                             {"id", id}
                         });
 
@@ -92,12 +83,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public IList<FilmType> GetAll()
         {
-            return base.ExecuteSelect(
-                "select * from @tableName",
-                new SqlParameters 
-                { 
-                    {"tableName", tabelName}
-                });
+            return base.ExecuteSelect("select * from film_type");
         }
 
         protected override FilmType DefaultRowMapping(NpgsqlDataReader reader)

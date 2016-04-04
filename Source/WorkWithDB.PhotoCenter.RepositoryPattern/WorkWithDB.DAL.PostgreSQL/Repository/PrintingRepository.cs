@@ -13,8 +13,6 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class PrintingRepository : BaseRepository<int, Printing>, IPrintingRepository
     {
-        private readonly string tabelName = "printing";
-
         public PrintingRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
         { 
@@ -22,14 +20,13 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public override int Save(Printing entity)
         {
-            return (int)
-                base.ExecuteScalar<double>(
-                    @"insert into @tableName (service_id,price,copy_count,discount,is_immediately,photo_format_id,paper_format_id)
+            entity.Id =
+                base.ExecuteScalar<int>(
+                    @"insert into printing (service_id,price,copy_count,discount,is_immediately,photo_format_id,paper_format_id)
                     values (@service_id,@price,@copy_count,@discount,@is_immediately,@photo_format_id,@paper_format_id) 
-                    SELECT SCOPE_IDENTITY()",
+                    SELECT RETURNING id",
                     new SqlParameters                    
-                    {          
-                        {"tableName", tabelName},
+                    {
                         {"service_id", entity.ServiceID},                    
                         {"price", entity.Price},                    
                         {"copy_count", entity.CopyCount},    
@@ -38,16 +35,19 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
                         {"photo_format_id", entity.PhotoFormat.Id},
                         {"paper_format_id", entity.PaperFormat.Id}                 
                     });
+
+            return entity.Id;
         }
 
         public override bool Update(Printing entity)
         {
             var res = base.ExecuteNonQuery(
-            @"update @tableName set service_id=@service_id,price=@price,copy_count=@copy_count,discount=@discount,
-                    is_immediately=@is_immediately,photo_format_id=@photo_format_id,paper_format_id=@paper_format_id",
+            @"update printing set service_id=@service_id,price=@price,copy_count=@copy_count,discount=@discount,
+                    is_immediately=@is_immediately,photo_format_id=@photo_format_id,paper_format_id=@paper_format_id
+                    WHERE id = @id",
                 new SqlParameters
                     {
-                        {"tableName", tabelName},
+                        {"id", entity.Id},
                         {"service_id", entity.ServiceID},                    
                         {"price", entity.Price},                    
                         {"copy_count", entity.CopyCount},    
@@ -62,21 +62,15 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>(
-                        "select count(*) from @tableName",
-                        new SqlParameters 
-                        { 
-                            {"tableName", tabelName}
-                        });
+            return base.ExecuteScalar<int>("select count(*) from printing");
         }
 
         public Printing GetByID(int id)
         {
             return base.ExecuteSingleRowSelect(
-                    "select * from @tableName where service_id = @id",
+                    "select * from printing where id = @id",
                     new SqlParameters()                        
-                    {
-                        {"tableName", tabelName},
+                    {                         
                         {"id", id}
                     });
         }
@@ -84,10 +78,9 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public bool Delete(int id)
         {
             var res = base.ExecuteNonQuery(
-                        "delete from @tableName where service_id = @id",
+                        "delete from printing where id = @id",
                         new SqlParameters()
-                        {
-                            {"tableName", tabelName},
+                        {                             
                             {"id", id}
                         });
 
@@ -101,12 +94,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public IList<Printing> GetAll()
         {
-            return base.ExecuteSelect(
-                "select * from @tableName",
-                new SqlParameters 
-                { 
-                    {"tableName", tabelName}
-                });
+            return base.ExecuteSelect("select * from printing");
         }
 
         protected override Printing DefaultRowMapping(NpgsqlDataReader reader)
@@ -115,6 +103,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
             {
                 return new Printing
                 {
+                    Id = (int)reader["id"],
                     ServiceID = (int)reader["service_id"],
                     PaperFormat = unitOfWork.PaperFormatRepository.GetByID((int)reader["paper_format_id"]),
                     PhotoFormat = unitOfWork.PhotoFormatRepository.GetByID((int)reader["photo_format_id"]),
