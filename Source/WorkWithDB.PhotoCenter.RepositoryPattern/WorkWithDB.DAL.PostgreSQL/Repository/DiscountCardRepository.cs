@@ -21,7 +21,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         {
             entity.Id =
                 base.ExecuteScalar<int>(
-                    @"insert into dicount_card (type_name,discount,code,is_personal)
+                    @"insert into discount_card (type_name,discount,code,is_personal)
                     values (@type_name,@discount,@code,@is_personal) RETURNING id",
                     new SqlParameters                    
                     {                      
@@ -37,7 +37,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public override bool Update(DiscountCard entity)
         {
             var res = base.ExecuteNonQuery(
-            @"update dicount_card set type_name=@type_name,discount=@discount,code=@code,is_personal=@is_personal
+            @"update discount_card set type_name=@type_name,discount=@discount,code=@code,is_personal=@is_personal
                 WHERE id=@id",
                 new SqlParameters
                     {                         
@@ -53,13 +53,13 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>("select count(*) from dicount_card");
+            return base.ExecuteScalar<int>("select count(*) from discount_card");
         }
 
         public DiscountCard GetByID(int id)
         {
             return base.ExecuteSingleRowSelect(
-                    "select * from dicount_card where id = @id",
+                    "select * from discount_card where id = @id",
                     new SqlParameters()                        
                     {                         
                         {"id", id}
@@ -69,7 +69,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public bool Delete(int id)
         {
             var res = base.ExecuteNonQuery(
-                        "delete from dicount_card where id = @id",
+                        "delete from discount_card where id = @id",
                         new SqlParameters()
                         {                             
                             {"id", id}
@@ -85,7 +85,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public IList<DiscountCard> GetAll()
         {
-            return base.ExecuteSelect("select * from dicount_card");
+            return base.ExecuteSelect("select * from discount_card");
         }
 
         protected override DiscountCard DefaultRowMapping(NpgsqlDataReader reader)

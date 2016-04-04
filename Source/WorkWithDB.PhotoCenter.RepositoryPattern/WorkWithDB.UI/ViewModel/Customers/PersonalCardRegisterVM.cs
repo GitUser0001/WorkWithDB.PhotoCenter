@@ -57,6 +57,22 @@ namespace WorkWithDB.UI.ViewModel.Customers
             }
         }
 
+        private bool _isPersonal = true;
+
+        public bool IsPersonal
+        {
+            get
+            {
+                return _isPersonal;
+            }
+
+            set
+            {
+                _isPersonal = value;
+                OnPropertyChanged();
+            }
+        }
+
         private RelayCommand _createCustomerCommand;
         public ICommand CreateCustomer
         {
@@ -78,10 +94,12 @@ namespace WorkWithDB.UI.ViewModel.Customers
             Model.DiscountCard discountCard = new Model.DiscountCard()
             {
                 TypeName = CardType,
-                IsPersonal = true,
+                IsPersonal = IsPersonal,
                 Discount = Disount,
                 Code = BarCode
             };
+
+            StateHolder.RegistratingClient.DiscountCard = discountCard;
 
             using (var unitOfWork = UnitOfWorkFactory.CreateInstance())
             {
