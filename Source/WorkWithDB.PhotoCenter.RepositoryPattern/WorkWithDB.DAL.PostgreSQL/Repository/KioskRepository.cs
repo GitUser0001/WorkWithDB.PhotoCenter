@@ -23,7 +23,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
             entity.Id =
                 base.ExecuteScalar<int>(
                     @"insert into kiosk (structure_unit_id, filiya_id)
-                    values (@structure_unit_id,@filiya_id) SELECT RETURNING id",
+                    values (@structure_unit_id,@filiya_id) RETURNING id",
                     new SqlParameters                    
                     {
                         {"structure_unit_id", entity.StructureUnitID},                    

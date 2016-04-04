@@ -22,7 +22,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
             entity.Id =
                 base.ExecuteScalar<int>(
                     @"insert into film_type (name,length,price)
-                    values (@name,@length,@price) SELECT RETURNING id",
+                    values (@name,@length,@price) RETURNING id",
                     new SqlParameters                    
                     {                   
                         {"name", entity.Name},                    

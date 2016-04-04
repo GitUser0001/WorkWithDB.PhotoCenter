@@ -9,6 +9,18 @@ namespace WorkWithDB.UI
 {
     public static class StateHolder
     {
-        public static Model.Client RegistratingClient { get; set; }
+        public static Model.Client RegistratingClient 
+        {
+            get
+            {
+                var a = RegistratingClient;
+                RegistratingClient = null;
+                return a;
+            } 
+            set
+            {
+                RegistratingClient = value;
+            }
+        }
     }
 }

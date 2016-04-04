@@ -70,6 +70,11 @@ namespace WorkWithDB.UI.ViewModel.Customers
 
         public void ExecuteCreateCustomerCommand(object parameter)
         {
+            if (StateHolder.RegistratingClient == null)
+            {
+                throw new InvalidOperationException("Client = null");
+            }
+
             Model.DiscountCard discountCard = new Model.DiscountCard()
             {
                 TypeName = CardType,
@@ -82,9 +87,11 @@ namespace WorkWithDB.UI.ViewModel.Customers
             {
                 unitOfWork.DiscountCardRepository.Save(discountCard);
                 unitOfWork.ClientRepository.Save(StateHolder.RegistratingClient);
-                unitOfWork.Commit();
-                WindowManager.ChangeView(parameter as string);
+                unitOfWork.Commit();                
             }
+
+            StateHolder.RegistratingClient = null;
+            WindowManager.ChangeView(parameter as string);
         }
 
         public bool CanExecuteCreateCustomerCommand(object parameter)

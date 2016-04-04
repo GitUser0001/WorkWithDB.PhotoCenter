@@ -24,7 +24,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
                 base.ExecuteScalar<int>(
                     @"insert into printing (service_id,price,copy_count,discount,is_immediately,photo_format_id,paper_format_id)
                     values (@service_id,@price,@copy_count,@discount,@is_immediately,@photo_format_id,@paper_format_id) 
-                    SELECT RETURNING id",
+                    RETURNING id",
                     new SqlParameters                    
                     {
                         {"service_id", entity.ServiceID},                    

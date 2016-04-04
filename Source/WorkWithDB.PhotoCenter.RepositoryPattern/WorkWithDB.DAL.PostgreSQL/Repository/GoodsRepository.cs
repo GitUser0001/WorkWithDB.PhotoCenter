@@ -20,7 +20,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         {
             entity.Id = base.ExecuteScalar<int>(
                     @"insert into goods (name,made_in,barcode,cost,critical_number)
-                    values (@name,@made_in,@barcode,@cost,@critical_number) SELECT RETURNING id",
+                    values (@name,@made_in,@barcode,@cost,@critical_number) RETURNING id",
                     new SqlParameters                    
                     {                   
                         {"name", entity.Name},                    

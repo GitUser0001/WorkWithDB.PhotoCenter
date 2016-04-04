@@ -22,7 +22,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
             entity.Id =
                 base.ExecuteScalar<int>(
                     @"insert into structural_unit (name,owner_info,adress,opening_date,jobs)
-                    values (@name,@owner_info,@adress,@opening_date,@jobs) SELECT RETURNING id",
+                    values (@name,@owner_info,@adress,@opening_date,@jobs) RETURNING id",
                     new SqlParameters                    
                     {                    
                         {"name", entity.Name},                    

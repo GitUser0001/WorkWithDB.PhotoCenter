@@ -22,7 +22,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
             entity.Id =
                 base.ExecuteScalar<int>(
                     @"insert into dicount_card (type_name,discount,code,is_personal)
-                    values (@type_name,@discount,@code,@is_personal) SELECT RETURNING id",
+                    values (@type_name,@discount,@code,@is_personal) RETURNING id",
                     new SqlParameters                    
                     {                      
                         {"type_name", entity.TypeName},                    
