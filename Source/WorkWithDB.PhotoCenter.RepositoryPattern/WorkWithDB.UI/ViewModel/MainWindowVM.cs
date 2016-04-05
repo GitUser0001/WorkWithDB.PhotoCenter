@@ -14,6 +14,7 @@ namespace WorkWithDB.UI.ViewModel
     {
         private UIElement _mainView;
         private UIElement _secondaryView;
+        private UIElement _stUnitView;
 
         public MainWindowVM()
         {
@@ -39,6 +40,20 @@ namespace WorkWithDB.UI.ViewModel
             get
             {
                 return _secondaryView;
+            }
+
+            set
+            {
+                _secondaryView = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public UIElement StUnitVeiew
+        {
+            get
+            {
+                return _stUnitView;
             }
 
             set
