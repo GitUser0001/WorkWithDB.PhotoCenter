@@ -30,7 +30,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
                         {"service_id", entity.ServiceID},                    
                         {"photo_count", entity.PhotoCount},                    
                         {"photographer_id", entity.Photographer.Id},    
-                        {"filiya_id", entity.Filiya.StructureUnitID},                    
+                        {"filiya_id", entity.Filiya.StructureUnit.Id},                    
                         {"is_immediately", entity.IsImmediately},                    
                         {"price", entity.Price}            
                     });
@@ -50,7 +50,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
                         {"service_id", entity.ServiceID},                    
                         {"photo_count", entity.PhotoCount},                    
                         {"photographer_id", entity.Photographer.Id},    
-                        {"filiya_id", entity.Filiya.StructureUnitID},                    
+                        {"filiya_id", entity.Filiya.StructureUnit.Id},                    
                         {"is_immediately", entity.IsImmediately},                    
                         {"price", entity.Price}       
                     });

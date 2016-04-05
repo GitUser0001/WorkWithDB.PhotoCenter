@@ -42,7 +42,7 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits.CurrentUnitSetter
 
         public void ExecuteSetStUnitCommand(object parameter)
         {
-            StateHolder.StructuteUnit = _structuralUnit;            
+            StateHolder.StructuteUnitCurrent = _structuralUnit;            
         }
 
         public bool CanExecuteSetStUnitCommand(object parameter)

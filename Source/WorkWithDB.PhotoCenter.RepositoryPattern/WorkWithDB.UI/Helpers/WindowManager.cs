@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using WorkWithDB.UI.ViewModel;
 using WorkWithDB.UI.Views.Customers;
+using WorkWithDB.UI.Views.StructuralUnits;
 using WorkWithDB.UI.Views.StructuralUnits.CurrentUnitSetter;
 
 namespace WorkWithDB.UI.Helpers
@@ -17,7 +18,9 @@ namespace WorkWithDB.UI.Helpers
         private static Dictionary<string, UIElement> _viewsDictionary = new Dictionary<string, UIElement>() 
         {
             {"CustomerRegister", CustomerRegister},
-            {"PersonalCardRegister", PersonalCardRegister}
+            {"PersonalCardRegister", PersonalCardRegister},
+            {"StructuralUnitList", StructuralUnitList},
+            {"StructureUnitEditor", StructureUnitEditor}
         };
 
         private static CustomerRegister CustomerRegister
@@ -33,6 +36,22 @@ namespace WorkWithDB.UI.Helpers
             get
             {
                 return new PersonalCardRegister();
+            }
+        }
+
+        private static StructuralUnitList StructuralUnitList
+        {
+            get
+            {
+                return new StructuralUnitList();
+            }
+        }
+
+        private static StructureUnitEditor StructureUnitEditor
+        {
+            get
+            {
+                return new StructureUnitEditor();
             }
         }
 

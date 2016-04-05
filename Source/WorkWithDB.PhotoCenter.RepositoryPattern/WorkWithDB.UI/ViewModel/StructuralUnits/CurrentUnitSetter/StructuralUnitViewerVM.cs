@@ -39,9 +39,9 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits.CurrentUnitSetter
         {            
             new WorkWithDB.UI.Views.StructuralUnits.CurrentUnitSetter.StructuralUnitSetter().ShowDialog();
             
-            if (StateHolder.StructuteUnit != null)
+            if (StateHolder.StructuteUnitCurrent != null)
             {
-                Id = StateHolder.StructuteUnit.Id;                
+                Id = StateHolder.StructuteUnitCurrent.Id;                
             }
         }
 

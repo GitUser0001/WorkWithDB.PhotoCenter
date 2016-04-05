@@ -9,7 +9,8 @@ namespace WorkWithDB.UI
 {
     public static class StateHolder
     {
-        public static Model.StructuralUnit StructuteUnit { get; set; }
+        public static Model.StructuralUnit StructuteUnitCurrent { get; set; }
         public static Model.Client RegistratingClient { get; set; }
+        public static Model.StructuralUnit StructureUnitEditing { get; set; }
     }
 }

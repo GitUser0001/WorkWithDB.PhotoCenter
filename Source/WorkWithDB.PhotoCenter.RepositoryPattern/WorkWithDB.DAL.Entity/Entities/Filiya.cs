@@ -10,11 +10,11 @@ namespace WorkWithDB.DAL.Entity.Entities
     public class Filiya : BaseEntity<int>
     {
         // id
-        //public StructuralUnit StructureUnit { get; set; }
+        public StructuralUnit StructureUnit { get; set; }
         //\\
 
         // id
-        public int StructureUnitID { get; set; }
+        //public int StructureUnitID { get; set; }
         //\\
 
         public Filiya Clone()
@@ -25,7 +25,7 @@ namespace WorkWithDB.DAL.Entity.Entities
         public override string ToString()
         {
             return string.Format(
-                "Filiya(StructuralUnitId: {1})", StructureUnitID);
+                "Filiya(StructuralUnitId: {1})", StructureUnit.Id);
         }
     }
 }

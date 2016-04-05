@@ -27,7 +27,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
                     new SqlParameters                    
                     {
                         {"structure_unit_id", entity.StructureUnitID},                    
-                        {"filiya_id", entity.Filiya.StructureUnitID},                                    
+                        {"filiya_id", entity.Filiya.StructureUnit.Id},                                    
                     });
 
             return entity.Id;
@@ -42,7 +42,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
                     {
                         {"id", entity.Id},
                         {"structure_unit_id", entity.StructureUnitID},                    
-                        {"filiya_id", entity.Filiya.StructureUnitID},    
+                        {"filiya_id", entity.Filiya.StructureUnit.Id},    
                     });
 
             return res > 0;

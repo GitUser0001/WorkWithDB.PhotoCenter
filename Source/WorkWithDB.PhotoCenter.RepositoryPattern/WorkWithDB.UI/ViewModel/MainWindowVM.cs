@@ -63,25 +63,20 @@ namespace WorkWithDB.UI.ViewModel
             }
         }
 
-        private RelayCommand _customerCommand;
-        public ICommand Customer
+        private RelayCommand _changeMainViewCommand;
+        public ICommand ChangeMainView
         {
             get
             {
-                if (_customerCommand == null)
-                    _customerCommand = new RelayCommand(ExecuteAddPersonalCardCommand, CanExecuteAddPersonalCardCommand);
-                return _customerCommand;
+                if (_changeMainViewCommand == null)
+                    _changeMainViewCommand = new RelayCommand(ExecuteAddPersonalCardCommand);
+                return _changeMainViewCommand;
             }
         }
 
         public void ExecuteAddPersonalCardCommand(object parameter)
         {
             WindowManager.ChangeMainView(parameter as string);
-        }
-
-        public bool CanExecuteAddPersonalCardCommand(object parameter)
-        {
-            return true;
         }
     }
 }

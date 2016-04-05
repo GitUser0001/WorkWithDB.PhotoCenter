@@ -36,7 +36,7 @@
                 			Text="New Order" />
                     </StackPanel>
                 </Button>
-                <Button Command="{Binding Customer}" CommandParameter="CustomerRegister" Padding="10" Margin="10,10,10.4,10"
+                <Button Command="{Binding ChangeMainView}" CommandParameter="CustomerRegister" Padding="10" Margin="10,10,10.4,10"
             	FontWeight="Medium" 
             	Style="{StaticResource MetroButton}">
                     <StackPanel Orientation="Horizontal" Margin="-30,0,0,0">
@@ -69,7 +69,8 @@
                     </StackPanel>
                 </Button>
 
-                <Button Padding="10" Margin="10"
+                <Button Command="{Binding ChangeMainView}" CommandParameter="StructuralUnitList"
+                    Padding="10" Margin="10"
                     FontWeight="Medium" 
                     Style="{StaticResource MetroButton}">
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,0">

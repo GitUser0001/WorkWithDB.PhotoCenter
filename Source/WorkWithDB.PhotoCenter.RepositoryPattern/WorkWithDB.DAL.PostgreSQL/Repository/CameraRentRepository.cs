@@ -28,7 +28,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
                     new SqlParameters                    
                     {    
                         {"service_id", entity.Service.Id},                    
-                        {"filiya_id", entity.Filiya.StructureUnitID},                    
+                        {"filiya_id", entity.Filiya.StructureUnit.Id},                    
                         {"price", entity.Price},    
                         {"passport_number", entity.PassportNumber},                    
                         {"passport_code", entity.PassportCode},                    
@@ -49,7 +49,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
                     {
                         {"id", entity.Id},
                         {"service_id", entity.Service.Id},                     
-                        {"filiya_id", entity.Filiya.StructureUnitID},                    
+                        {"filiya_id", entity.Filiya.StructureUnit.Id},                    
                         {"price", entity.Price},    
                         {"passport_number", entity.PassportNumber},                    
                         {"passport_code", entity.PassportCode},                    

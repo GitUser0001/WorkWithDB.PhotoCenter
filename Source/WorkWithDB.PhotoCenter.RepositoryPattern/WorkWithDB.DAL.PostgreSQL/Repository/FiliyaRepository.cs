@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkWithDB.DAL.Abstract;
 using WorkWithDB.DAL.Abstract.Repository;
 using WorkWithDB.DAL.Entity.Entities;
 using WorkWithDB.DAL.PostgreSQL.Infrastructure;
@@ -26,7 +27,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
                     "insert into filiya (structural_unit_id) values (@stUnitID) RETURNING id",
                     new SqlParameters
                     {
-                        {"stUnitID", entity.StructureUnitID},                               
+                        {"stUnitID", entity.StructureUnit.Id},                               
                     });
 
             return entity.Id;
@@ -40,7 +41,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
                 new SqlParameters
                     {
                         {"id", entity.Id},
-                        {"st_unit_id", entity.StructureUnitID},        
+                        {"st_unit_id", entity.StructureUnit.Id},        
                     });
 
             return res > 0;
@@ -85,11 +86,14 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         
         protected override Filiya DefaultRowMapping(NpgsqlDataReader reader)
         {
-            return new Filiya
+            using (var unitOfWork = UnitOfWorkFactory.CreateInstance())
             {
-                Id = (int)reader["id"],
-                StructureUnitID = (int)reader["structural_unit_id"]
-            };
+                return new Filiya
+                {
+                    Id = (int)reader["id"],
+                    StructureUnit = unitOfWork.StructuralUnitRepository.GetByID((int)reader["structural_unit_id"])
+                };
+            }
         }
     }
 }

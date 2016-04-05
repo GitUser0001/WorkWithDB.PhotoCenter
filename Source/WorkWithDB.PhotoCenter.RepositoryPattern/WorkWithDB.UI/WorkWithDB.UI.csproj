@@ -115,6 +115,8 @@
     <Compile Include="ViewModel\MainWindowVM.cs" />
     <Compile Include="ViewModel\StructuralUnits\CurrentUnitSetter\StructuralUnitSetterVM.cs" />
     <Compile Include="ViewModel\StructuralUnits\CurrentUnitSetter\StructuralUnitViewerVM.cs" />
+    <Compile Include="ViewModel\StructuralUnits\StructuralUnitListVM.cs" />
+    <Compile Include="ViewModel\StructuralUnits\StructureUnitEditorVM.cs" />
     <Compile Include="Views\Customers\CustomerRegister.xaml.cs">
       <DependentUpon>CustomerRegister.xaml</DependentUpon>
     </Compile>
@@ -126,6 +128,12 @@
     </Compile>
     <Compile Include="Views\StructuralUnits\CurrentUnitSetter\StructuralUnitViewer.xaml.cs">
       <DependentUpon>StructuralUnitViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StructuralUnits\StructuralUnitList.xaml.cs">
+      <DependentUpon>StructuralUnitList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StructuralUnits\StructureUnitEditor.xaml.cs">
+      <DependentUpon>StructureUnitEditor.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -155,6 +163,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\StructuralUnits\CurrentUnitSetter\StructuralUnitViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StructuralUnits\StructuralUnitList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StructuralUnits\StructureUnitEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
