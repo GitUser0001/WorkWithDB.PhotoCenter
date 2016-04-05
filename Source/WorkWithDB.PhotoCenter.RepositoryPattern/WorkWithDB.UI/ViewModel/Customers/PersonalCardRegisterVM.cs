@@ -109,7 +109,7 @@ namespace WorkWithDB.UI.ViewModel.Customers
             }
 
             StateHolder.RegistratingClient = null;
-            WindowManager.ChangeView(parameter as string);
+            WindowManager.ChangeMainView(parameter as string);
         }
 
         public bool CanExecuteCreateCustomerCommand(object parameter)

@@ -18,11 +18,16 @@ namespace WorkWithDB.UI.Views.StructuralUnits.CurrentUnitSetter
     /// <summary>
     /// Interaction logic for StructuralUnitSetter.xaml
     /// </summary>
-    public partial class StructuralUnitSetter : UserControl
+    public partial class StructuralUnitSetter : Window
     {
         public StructuralUnitSetter()
         {
             InitializeComponent();
+        }
+
+        private void Button_Close(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

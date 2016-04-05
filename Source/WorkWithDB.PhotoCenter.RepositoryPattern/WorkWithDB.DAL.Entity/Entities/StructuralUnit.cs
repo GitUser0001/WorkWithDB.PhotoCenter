@@ -22,8 +22,7 @@ namespace WorkWithDB.DAL.Entity.Entities
 
         public override string ToString()
         {
-            return string.Format(
-                "StructuralUnit(Id: {1})", Id);
+            return string.Format("{0}", Id);
         }
     }
 }

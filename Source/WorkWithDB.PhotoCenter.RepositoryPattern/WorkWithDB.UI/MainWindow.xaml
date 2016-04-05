@@ -93,7 +93,7 @@
 
             </StackPanel>
 
-            <ContentPresenter Grid.Row="1" Content="{Binding StUnitVeiew, UpdateSourceTrigger=PropertyChanged}"/>
+            <ContentPresenter Grid.Row="1" Content="{Binding InfoVeiew, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
 
 

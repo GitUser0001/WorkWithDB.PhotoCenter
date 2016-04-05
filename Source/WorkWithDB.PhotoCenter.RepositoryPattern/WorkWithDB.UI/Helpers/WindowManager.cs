@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using WorkWithDB.UI.ViewModel;
 using WorkWithDB.UI.Views.Customers;
+using WorkWithDB.UI.Views.StructuralUnits.CurrentUnitSetter;
 
 namespace WorkWithDB.UI.Helpers
 {
@@ -40,7 +41,23 @@ namespace WorkWithDB.UI.Helpers
             _mainWindowViewModel = viewModel;
         }
 
-        public static void ChangeView(string viewName)
+        public static void ChangeInfoView(string viewName)
+        {
+            if (IsLegalOperation(viewName))
+            {
+                _mainWindowViewModel.InfoVeiew = _viewsDictionary[viewName];
+            }            
+        }
+
+        public static void ChangeMainView(string viewName)
+        {
+            if(IsLegalOperation(viewName))
+            {
+                _mainWindowViewModel.MainView = _viewsDictionary[viewName];  
+            }                 
+        }
+
+        private static bool IsLegalOperation(string viewName)
         {
             if (_mainWindowViewModel == null)
             {
@@ -51,8 +68,7 @@ namespace WorkWithDB.UI.Helpers
             {
                 throw new InvalidOperationException("no such view");
             }
-
-            _mainWindowViewModel.MainView = _viewsDictionary[viewName];
+            return true;
         }
     }
 }

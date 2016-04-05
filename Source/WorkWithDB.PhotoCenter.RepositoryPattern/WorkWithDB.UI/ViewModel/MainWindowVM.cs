@@ -14,7 +14,7 @@ namespace WorkWithDB.UI.ViewModel
     {
         private UIElement _mainView;
         private UIElement _secondaryView;
-        private UIElement _stUnitView;
+        private UIElement _infoView = new WorkWithDB.UI.Views.StructuralUnits.CurrentUnitSetter.StructuralUnitViewer();
 
         public MainWindowVM()
         {
@@ -49,16 +49,16 @@ namespace WorkWithDB.UI.ViewModel
             }
         }
 
-        public UIElement StUnitVeiew
+        public UIElement InfoVeiew
         {
             get
             {
-                return _stUnitView;
+                return _infoView;
             }
 
             set
             {
-                _secondaryView = value;
+                _infoView = value;
                 OnPropertyChanged();
             }
         }
@@ -76,7 +76,7 @@ namespace WorkWithDB.UI.ViewModel
 
         public void ExecuteAddPersonalCardCommand(object parameter)
         {
-            WindowManager.ChangeView(parameter as string);
+            WindowManager.ChangeMainView(parameter as string);
         }
 
         public bool CanExecuteAddPersonalCardCommand(object parameter)

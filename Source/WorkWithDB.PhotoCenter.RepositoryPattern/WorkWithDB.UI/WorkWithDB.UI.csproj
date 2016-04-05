@@ -113,6 +113,8 @@
     <Compile Include="Helpers\ViewModelBase.cs" />
     <Compile Include="ViewModel\Customers\PersonalCardRegisterVM.cs" />
     <Compile Include="ViewModel\MainWindowVM.cs" />
+    <Compile Include="ViewModel\StructuralUnits\CurrentUnitSetter\StructuralUnitSetterVM.cs" />
+    <Compile Include="ViewModel\StructuralUnits\CurrentUnitSetter\StructuralUnitViewerVM.cs" />
     <Compile Include="Views\Customers\CustomerRegister.xaml.cs">
       <DependentUpon>CustomerRegister.xaml</DependentUpon>
     </Compile>
@@ -218,7 +220,6 @@
   <ItemGroup>
     <Folder Include="ViewModel\NewOrder\" />
     <Folder Include="ViewModel\OrderHistory\" />
-    <Folder Include="ViewModel\StructuralUnits\CurrentUnitSetter\" />
     <Folder Include="ViewModel\Supplies\" />
     <Folder Include="Views\NewOrder\" />
     <Folder Include="Views\OrderHistory\" />
