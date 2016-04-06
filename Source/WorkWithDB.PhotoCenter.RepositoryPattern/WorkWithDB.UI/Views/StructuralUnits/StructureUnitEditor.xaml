@@ -4,15 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                 xmlns:VM="clr-namespace:WorkWithDB.UI.ViewModel.StructuralUnits"
+                xmlns:BoolToVisibilityConv="clr-namespace:WorkWithDB.UI.Helpers.Converters"
              mc:Ignorable="d"
-             Width="381.6" Height="420">
+             Width="381.6" Height="500">
     
     <UserControl.DataContext>
         <VM:StructureUnitEditorVM/>
     </UserControl.DataContext>
     
+    <UserControl.Resources>
+        <BoolToVisibilityConv:BoolToVisibilityConverter x:Key="BoolToVisibilityConvertor"/>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -101,20 +107,35 @@
         		Text="Is Filiya" Foreground="#FF0055AB" Margin="20,35,0,0"
         		FontSize="18" FontWeight="Medium" VerticalAlignment="Top"  Grid.Row="5" Height="24"/>
 
-        <CheckBox IsChecked="{Binding IsFiliya, UpdateSourceTrigger=PropertyChanged}" Margin="80,35,87,0" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Top">
+        <CheckBox Name="IsFiliya" IsChecked="{Binding IsFiliya, UpdateSourceTrigger=PropertyChanged}" Margin="80,35,87,0" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Top">
             <CheckBox.LayoutTransform>
                 <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
             </CheckBox.LayoutTransform>
         </CheckBox>
+        
+        
+        <!--*********************************************6  ***********************************************-->
 
-        <!--*********************************************6 row*********************************************-->
+        <StackPanel Grid.Row="6" Orientation="Horizontal" Visibility="{Binding ElementName=IsFiliya, Path=IsChecked, Converter={StaticResource BoolToVisibilityConvertor}}">
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" 
+        		Text="Filiya Id" Foreground="#FF0055AB" Margin="20,15,0,0"
+        		FontSize="18" FontWeight="Medium" VerticalAlignment="Top"   Height="24"/>
+
+            <TextBox Text="{Binding Path=FiliyaId, UpdateSourceTrigger=PropertyChanged}" 
+                     HorizontalAlignment="Right" Margin="95,15,30,0" FontSize="16"
+                     TextWrapping="Wrap" Tag="2" Style="{StaticResource placeHolder}"
+                     VerticalAlignment="Top" Width="171"/>
+        </StackPanel>
+        
+        
+        <!--*********************************************7 row*********************************************-->
 
 
         <Separator HorizontalAlignment="Stretch" Height="18" Margin="10"
-                       VerticalAlignment="Top"  Background="#FFEDADAD" Grid.Row="6"/>
+                       VerticalAlignment="Top"  Background="#FFEDADAD" Grid.Row="7"/>
 
         <Button Command="{Binding AddStructuralUnit}" CommandParameter="StructuralUnitList"
-                    Padding="10" Margin="0,49.6,20,0.2" Grid.Row="6"
+                    Padding="10" Margin="0,49.6,20,0.2" Grid.Row="7"
                     FontWeight="Medium" 
                     Style="{StaticResource MetroButton}" HorizontalAlignment="Right" Width="204">
             <StackPanel Orientation="Horizontal" Margin="-30,0,0,0">

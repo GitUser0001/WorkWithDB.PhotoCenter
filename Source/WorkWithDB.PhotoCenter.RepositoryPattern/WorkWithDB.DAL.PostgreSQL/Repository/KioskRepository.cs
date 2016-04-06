@@ -26,7 +26,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
                     values (@structure_unit_id,@filiya_id) RETURNING id",
                     new SqlParameters                    
                     {
-                        {"structure_unit_id", entity.StructureUnitID},                    
+                        {"structure_unit_id", entity.StructureUnit.Id},                    
                         {"filiya_id", entity.Filiya.StructureUnit.Id},                                    
                     });
 
@@ -41,7 +41,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
                 new SqlParameters
                     {
                         {"id", entity.Id},
-                        {"structure_unit_id", entity.StructureUnitID},                    
+                        {"structure_unit_id", entity.StructureUnit.Id},                    
                         {"filiya_id", entity.Filiya.StructureUnit.Id},    
                     });
 
@@ -102,7 +102,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
                 return new Kiosk
                 {
                     Id = (int)reader["id"],
-                    StructureUnitID = (int)reader["structure_unit_id"],
+                    StructureUnit = unitOfWork.StructuralUnitRepository.GetByID((int)reader["structure_unit_id"]),
                     Filiya = unitOfWork.FiliyaRepository.GetByID((int)reader["filiya_id"])
                 };
             }

@@ -10,7 +10,7 @@ namespace WorkWithDB.DAL.Entity.Entities
     public class Kiosk : BaseEntity<int>
     {
         //id
-        //public StructuralUnit StructureUnit { get; set; }
+        public StructuralUnit StructureUnit { get; set; }
         //\\
 
         //Link        
@@ -18,7 +18,7 @@ namespace WorkWithDB.DAL.Entity.Entities
         //\\
 
         //id
-        public int StructureUnitID { get; set; }
+        //public int StructureUnitID { get; set; }
         //\\
 
         //Link        
@@ -33,7 +33,7 @@ namespace WorkWithDB.DAL.Entity.Entities
         public override string ToString()
         {
             return string.Format(
-                "Kiosk(StructuralUnitId: {1})", StructureUnitID);
+                "Kiosk(StructuralUnitId: {1})", StructureUnit.Id);
         }
     }
 }

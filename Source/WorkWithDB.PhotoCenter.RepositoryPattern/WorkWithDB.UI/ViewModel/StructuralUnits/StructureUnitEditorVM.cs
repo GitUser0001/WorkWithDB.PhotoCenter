@@ -88,6 +88,21 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits
             }
         }
 
+        private int _filiyaId;
+        public int FiliyaId
+        {
+            get
+            {
+                return _filiyaId;
+            }
+
+            set
+            {
+                _filiyaId = value;
+                OnPropertyChanged();
+            }
+        }
+
         private RelayCommand _addStructuralUnitCommand;
         public ICommand AddStructuralUnit
         {
@@ -123,6 +138,16 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits
 
                     unitOfWork.FiliyaRepository.Save(filiya);
                 }
+                else
+                {
+                    Model.Kiosk kiosk = new Model.Kiosk()
+                    {
+                        Filiya = unitOfWork.FiliyaRepository.GetByID(FiliyaId),
+                        StructureUnit = strucutreUnit
+                    };
+
+                    unitOfWork.KioskRepository.Save(kiosk);
+                }
 
                 unitOfWork.Commit();
             }
@@ -132,8 +157,21 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits
 
         public bool CanExecuteAddStructuralUnitCommand(object parameter)
         {
-            return IsFiliya && !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Address) &&
+            if (IsFiliya)
+            {
+                return !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Address) &&
                     Workers > 0 && !string.IsNullOrWhiteSpace(OwnerInfo);
+            }
+            else
+            {
+                using (var unitOfWork = UnitOfWorkFactory.CreateInstance())
+                {
+                    var filiya = unitOfWork.FiliyaRepository.GetByID(FiliyaId);
+                    
+                    return filiya != null && !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Address) &&
+                            Workers > 0 && !string.IsNullOrWhiteSpace(OwnerInfo);
+                }                
+            }
         }
     }
 }
