@@ -16,7 +16,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public KioskRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
         {
-        }
+        }        
 
         public override int Save(Kiosk entity)
         {
