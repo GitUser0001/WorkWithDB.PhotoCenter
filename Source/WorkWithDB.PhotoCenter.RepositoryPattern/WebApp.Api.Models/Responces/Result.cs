@@ -7,6 +7,9 @@ namespace WebApp.Api.Models.Responces
     {
         public static readonly Result<T> Forbidden = new Result<T> { ErrorMessage = "Forbidden", HasError = true };
         public static readonly Result<T> Unauthorized = new Result<T> { ErrorMessage = "Unauthorized", HasError = true };
+        public static readonly Result<T> NotExist = new Result<T> { ErrorMessage = "There is no item with such value", HasError = true };
+        public static readonly Result<T> BadValue = new Result<T> { ErrorMessage = "You entered bad value", HasError = true };
+
 
         [JsonProperty]
         public bool HasError { get; set; }

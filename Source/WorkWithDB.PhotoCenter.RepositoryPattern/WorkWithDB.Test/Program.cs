@@ -32,7 +32,7 @@ namespace WorkWithDB.Test
                     Name = "sssssss"
                 };
 
-                int a = scope.GoodsRepository.Save(goods);
+                int a = scope.GoodsRepository.GetCount();
                 scope.Commit();
                 Console.WriteLine("res = " + a.ToString());                
             }

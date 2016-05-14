@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace WebApp.Api.Models.Model
 {
-    class UsersRepository
+    public class UsersRepository
     {
+        private int currentIndex = 2;
         private List<User> users = new List<User>() 
         {
             new User() { Id=1, Nick="Dan", Password="123"},
@@ -44,6 +45,22 @@ namespace WebApp.Api.Models.Model
             }
 
             return null;
+        }
+
+        public int Insert(User user)
+        {
+            foreach (var userInRepo in users)
+            {
+                if (user.Nick == userInRepo.Nick)
+                {
+                    return 0;
+                }
+            }
+
+            user.Id = ++currentIndex;
+            users.Add(user);
+
+            return currentIndex;
         }
     }
 }

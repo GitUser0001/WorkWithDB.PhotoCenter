@@ -10,7 +10,7 @@ using WebApp.Api.Models.Model;
 
 namespace WebApp.BL.Security
 {
-    class CredentialsChecker : ICredentialsChecker
+    public class CredentialsChecker : ICredentialsChecker
     {
         private readonly UsersRepository _userRepository;
 

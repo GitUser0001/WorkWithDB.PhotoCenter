@@ -43,7 +43,7 @@ namespace WebApp.BL.Security
         public string GenerateToken(int userId, string nick)
         {
             var token = Guid.NewGuid();
-
+            
             _tokensCache[token] = new UserDescriptorHolder(new UserDescriptor(userId, nick));
             
             // 32 цифры

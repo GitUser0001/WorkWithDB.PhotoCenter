@@ -63,11 +63,12 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCountByCountry(string countryName)
         {
-            return base.ExecuteScalar<int>(
-                    "select count(*) from goods where made_id = @id",
+            return (int)
+                base.ExecuteScalar<long>(
+                    "select count(*) from goods where made_in = @madeIn",
                     new SqlParameters()                        
                     {
-                        {"id", countryName}
+                        {"madeIn", countryName}
                     });
         }
 
@@ -83,7 +84,8 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 
         public int GetCount()
         {
-            return base.ExecuteScalar<int>("select count(*) from goods");
+            return (int)
+                base.ExecuteScalar<long>("select count(*) from goods");
         }
 
         public Goods GetByID(int id)

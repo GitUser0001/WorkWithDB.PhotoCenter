@@ -54,8 +54,6 @@ namespace WorkWithDB.DAL.PostgreSQL.Infrastructure
             using (NpgsqlCommand command = new NpgsqlCommand(sql, _connection, _transaction))
             {
                 FillParameters(parameters, command);
-               
-                    
                 return (T)command.ExecuteScalar();
             }
         }
