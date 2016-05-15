@@ -14,10 +14,11 @@ using WorkWithDB.DAL.PostgreSQL;
 
 namespace WebApp.Controllers.Api
 {
-        [RoutePrefix("api/Auth")]
+    [RoutePrefix("api/Auth")]
     public class AuthController : ApiController
     {
         private readonly ICredentialsChecker _credentialsChecker;
+        private readonly IAccessTokenValidator _tokenValidator;
         private readonly IAccessTokenGenerator _accessTokenGenerator;
         private UsersRepository _usersRepository;
 
@@ -26,6 +27,7 @@ namespace WebApp.Controllers.Api
             _usersRepository = DataHolder.UsersRepo;
             _credentialsChecker = DataHolder.CredentialsChecker;
             _accessTokenGenerator = DataHolder.TokenGenerator;
+            _tokenValidator = DataHolder.TokenValidator;
         }
 
         [HttpPost]
@@ -72,6 +74,22 @@ namespace WebApp.Controllers.Api
             }
 
             return new AuthResult { Message = "Can't save user!" };
+        }
+
+        [HttpGet]
+        [Route("Validate")]
+        public AuthResult Validate([FromUri] string token)
+        {
+            if (token != null)
+            {
+                var user = _tokenValidator.ValidateToken(token);
+                if (user != null)
+                {
+                    return new AuthResult { Message = "Ok" };
+                }
+            }            
+
+            return new AuthResult { Message = "Unauthorized, pls log in" };
         }
     }
 }

@@ -1,0 +1,26 @@
+﻿@model WebApp.Models.GoodsCountViewModel
+
+<table class="table">
+    <tr>
+        <th>
+            Entity Name
+        </th>
+        <th>
+            Count of
+        </th>
+        <th>
+            Count
+        </th>
+
+    <tr>
+        <td>
+            @Html.DisplayFor(model => model.EntityName)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.CountOf)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Count)
+        </td>
+     </tr>
+</table>

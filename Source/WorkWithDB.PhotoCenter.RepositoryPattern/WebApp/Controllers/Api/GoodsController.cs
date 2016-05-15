@@ -20,7 +20,7 @@ namespace WebApp.Controllers.Api
         private readonly IGoodsRepository _goodsRepository;
 
         public GoodsController()
-        {            
+        {
             _goodsRepository = DataHolder.Scope.GoodsRepository;
             _tokenValidator = DataHolder.TokenValidator;
         }
@@ -39,7 +39,7 @@ namespace WebApp.Controllers.Api
         }
 
         [HttpPost]
-        [Route("save")]
+        [Route("Save")]
         public Result<int> Save([FromUri]string token, [FromBody] Model.Goods goods)
         {
             var user =
@@ -68,7 +68,7 @@ namespace WebApp.Controllers.Api
         }
 
         [HttpGet]
-        [Route("count")]
+        [Route("Count")]
         public Result<int> Count([FromUri] string token)
         {
             var user =
@@ -81,7 +81,7 @@ namespace WebApp.Controllers.Api
         }
 
         [HttpGet]
-        [Route("count")]
+        [Route("Count")]
         public Result<int> CountByCountry([FromUri] string token, [FromUri] string country)
         {
             var user =
@@ -94,7 +94,7 @@ namespace WebApp.Controllers.Api
         }
 
         [HttpGet]
-        [Route("get")]
+        [Route("Get")]
         public Result<Model.Goods> GetByID([FromUri]string token, [FromUri]int id)
         {
             var user =
@@ -115,7 +115,7 @@ namespace WebApp.Controllers.Api
         }
 
         [HttpGet]
-        [Route("delete")]
+        [Route("Delete")]
         public Result<bool> Delete([FromUri] string token, [FromUri] int id)
         {
             var user =
@@ -124,7 +124,15 @@ namespace WebApp.Controllers.Api
             if (user == null)
                 return Result<bool>.Unauthorized;
 
-            return _goodsRepository.Delete(id);
+            bool result;
+
+            using (var scope = UnitOfWorkFactory.CreateInstance())
+            {
+                result = scope.GoodsRepository.Delete(id); ;
+                scope.Commit();
+            }
+
+            return result;
         }
 
         [HttpPut]
@@ -137,7 +145,7 @@ namespace WebApp.Controllers.Api
             if (user == null)
                 return Result<bool>.Unauthorized;
 
-            if (goods.Id == null || goods.Id == 0)
+            if (goods.Id == 0)
             {
                 return new Result<bool> { ErrorMessage = "404 Incorrect ID", HasError = true };
             }

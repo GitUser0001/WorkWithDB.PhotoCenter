@@ -57,8 +57,11 @@ namespace WebApp.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
+            Response.Redirect("../WebAccount/Login");
+            return null;
+
+            //ViewBag.ReturnUrl = returnUrl;
+            //return View("../WebAccount/Login");
         }
 
         //
@@ -139,7 +142,9 @@ namespace WebApp.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            Response.Redirect("../WebAccount/Register");
+            return null;
+            //return View("../WebAccount/Register");
         }
 
         //

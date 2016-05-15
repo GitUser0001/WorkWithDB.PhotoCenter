@@ -28,9 +28,20 @@ namespace WebApp.Api.Models.Responces
             Value = value;
         }
 
+        public Result GetError()
+        {                
+            return new Result() { ErrorMessage = ErrorMessage };         
+        }
+
         public static implicit operator Result<T>(T value)
         {
             return new Result<T>(value);
         }
+    }
+
+    public class Result
+    {
+        public string ErrorMessage { get; set; }
+        public string InfoMessage { get; set; }
     }
 }
