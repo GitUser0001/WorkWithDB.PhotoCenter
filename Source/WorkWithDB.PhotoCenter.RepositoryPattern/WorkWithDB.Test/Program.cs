@@ -4,7 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkWithDB.DAL.Abstract;
+using WorkWithDB.DAL.Entity.Entities;
 using WorkWithDB.DAL.PostgreSQL;
+using Model = WorkWithDB.DAL.Entity.Entities;
+using System.Configuration;
 
 namespace WorkWithDB.Test
 {
@@ -12,26 +15,29 @@ namespace WorkWithDB.Test
     {
         private static void Main(string[] args)
         {
-            using (IUnitOfWork scope = new UnitOfWork())
+            UnitOfWorkFactory.__Initialize(() => new UnitOfWork());
+
+            Console.WriteLine("Connecting...");
+            Console.WriteLine(ConfigurationManager.ConnectionStrings["Home"].ConnectionString);
+            using (IUnitOfWork scope = UnitOfWorkFactory.CreateInstance())
             {
-                var listOfGoods = scope.GoodsRepository.GetAll();
+                Console.WriteLine("Connected");
 
-                Console.WriteLine("Elements in Goods table = " + listOfGoods.Count + "\n");
-                int i = 0;
-
-                foreach (var goods in listOfGoods)
+                Goods goods = new Goods()
                 {
-                    Console.WriteLine(goods.ToString());
-                    i++;
+                    Barcode = 1323,
+                    Cost = 2,
+                    CriticalNumber = 2,
+                    MadeIN = "AAAAAA",
+                    Name = "sssssss"
+                };
 
-                    if (i > 10)
-                    {
-                        break;
-                    }
-                }
-
-                Console.ReadLine();
+                int a = scope.GoodsRepository.GetCount();
+                scope.Commit();
+                Console.WriteLine("res = " + a.ToString());                
             }
+
+            Console.ReadLine();
         }
     }
 }

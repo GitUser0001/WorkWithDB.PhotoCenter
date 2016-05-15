@@ -1,0 +1,58 @@
+﻿<Window x:Class="WorkWithDB.UI.Views.StructuralUnits.CurrentUnitSetter.StructuralUnitSetter"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+            xmlns:classicTheme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Classic"
+                   xmlns:VM="clr-namespace:WorkWithDB.UI.ViewModel.StructuralUnits.CurrentUnitSetter"
+            Width="268.8" Height="188">
+
+    <Window.DataContext>
+        <VM:StructuralUnitSetterVM/>
+    </Window.DataContext>
+
+    <Grid>
+
+        <StackPanel Orientation="Vertical">
+
+            <StackPanel Orientation="Horizontal">
+
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" 
+        		Text="St. Unit id:  " Foreground="#FF0055AB" Margin="50,30,0,0"
+        		FontSize="18" FontWeight="Medium" VerticalAlignment="Top" Height="24"/>
+
+                <TextBox Text="{Binding Path=Id, UpdateSourceTrigger=PropertyChanged}" 
+                     HorizontalAlignment="Right" Margin="0,30,0,0" Grid.Row="1" FontSize="16"
+                     TextWrapping="Wrap" Style="{StaticResource placeHolder}"
+                     VerticalAlignment="Top" Width="70"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <Button Command="{Binding SetStUnit}"
+                    Padding="10" Margin="50,40,0,0"
+                    FontWeight="Medium" 
+                    Style="{StaticResource MetroButton}" HorizontalAlignment="Right" Click="Button_Close">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="14"
+                			VerticalAlignment="Center"
+                			Text="Save" />
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Padding="10" Margin="60,40,0,0"
+                    FontWeight="Medium" 
+                    Style="{StaticResource MetroButton}" HorizontalAlignment="Right" Click="Button_Close">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="14"
+                			VerticalAlignment="Center"
+                			Text="Close" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+
+
+        </StackPanel>
+
+    </Grid>
+</Window>

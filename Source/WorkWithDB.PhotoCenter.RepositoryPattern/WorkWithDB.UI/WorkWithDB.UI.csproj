@@ -14,7 +14,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <NuGetPackageImportStamp>d0e16976</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>13541cb3</NuGetPackageImportStamp>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
@@ -62,6 +62,7 @@
     <AssemblyOriginatorKeyFile>PhotoCenter.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationFramework.Classic" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -105,6 +106,36 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helpers\Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Helpers\RelayCommand.cs" />
+    <Compile Include="Helpers\WindowManager.cs" />
+    <Compile Include="StateHolder.cs" />
+    <Compile Include="ViewModel\Customers\CustomerRegisterVM.cs" />
+    <Compile Include="Helpers\ViewModelBase.cs" />
+    <Compile Include="ViewModel\Customers\PersonalCardRegisterVM.cs" />
+    <Compile Include="ViewModel\MainWindowVM.cs" />
+    <Compile Include="ViewModel\StructuralUnits\CurrentUnitSetter\StructuralUnitSetterVM.cs" />
+    <Compile Include="ViewModel\StructuralUnits\CurrentUnitSetter\StructuralUnitViewerVM.cs" />
+    <Compile Include="ViewModel\StructuralUnits\StructuralUnitListVM.cs" />
+    <Compile Include="ViewModel\StructuralUnits\StructureUnitEditorVM.cs" />
+    <Compile Include="Views\Customers\CustomerRegister.xaml.cs">
+      <DependentUpon>CustomerRegister.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Customers\PersonalCardRegister.xaml.cs">
+      <DependentUpon>PersonalCardRegister.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StructuralUnits\CurrentUnitSetter\StructuralUnitSetter.xaml.cs">
+      <DependentUpon>StructuralUnitSetter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StructuralUnits\CurrentUnitSetter\StructuralUnitViewer.xaml.cs">
+      <DependentUpon>StructuralUnitViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StructuralUnits\StructuralUnitList.xaml.cs">
+      <DependentUpon>StructuralUnitList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StructuralUnits\StructureUnitEditor.xaml.cs">
+      <DependentUpon>StructureUnitEditor.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -120,6 +151,30 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\Customers\CustomerRegister.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Customers\PersonalCardRegister.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StructuralUnits\CurrentUnitSetter\StructuralUnitSetter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StructuralUnits\CurrentUnitSetter\StructuralUnitViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StructuralUnits\StructuralUnitList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StructuralUnits\StructureUnitEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -165,17 +220,49 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WorkWithDB.DAL.Abstract\WorkWithDB.DAL.Abstract.csproj">
+      <Project>{445bb82a-f082-40ac-8da6-3feb7e4361de}</Project>
+      <Name>WorkWithDB.DAL.Abstract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkWithDB.DAL.Entity\WorkWithDB.DAL.Entity.csproj">
+      <Project>{4c3c0b31-0a21-4e39-9f3a-5c896cd39de8}</Project>
+      <Name>WorkWithDB.DAL.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkWithDB.DAL.PostgreSQL\WorkWithDB.DAL.PostgreSQL.csproj">
+      <Project>{5645d5be-6f6c-43de-8737-145179f89ddd}</Project>
+      <Name>WorkWithDB.DAL.PostgreSQL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModel\NewOrder\" />
+    <Folder Include="ViewModel\OrderHistory\" />
+    <Folder Include="ViewModel\Supplies\" />
+    <Folder Include="Views\NewOrder\" />
+    <Folder Include="Views\OrderHistory\" />
+    <Folder Include="Views\Supplies\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\business.png" />
+    <Resource Include="Media\commerce.png" />
+    <Resource Include="Media\direction.png" />
+    <Resource Include="Media\shopping.png" />
+    <Resource Include="Media\symbol.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\commerce1.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\StyleCopPlus.MSBuild.4.7.49.5\build\StyleCopPlus.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCopPlus.MSBuild.4.7.49.5\build\StyleCopPlus.MSBuild.props'))" />
-    <Error Condition="!Exists('..\packages\StyleCop.MSBuild.4.7.50.0\build\StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCop.MSBuild.4.7.50.0\build\StyleCop.MSBuild.Targets'))" />
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets'))" />
+    <Error Condition="!Exists('..\packages\StyleCopPlus.MSBuild.4.7.49.5\build\StyleCopPlus.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCopPlus.MSBuild.4.7.49.5\build\StyleCopPlus.MSBuild.props'))" />
   </Target>
-  <Import Project="..\packages\StyleCop.MSBuild.4.7.50.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\packages\StyleCop.MSBuild.4.7.50.0\build\StyleCop.MSBuild.Targets')" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

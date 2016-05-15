@@ -1,0 +1,52 @@
+﻿@model WorkWithDB.DAL.Entity.Entities.Goods
+
+<div>
+    <h4>Goods</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MadeIN)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MadeIN)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Barcode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Barcode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Cost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CriticalNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CriticalNumber)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Update", "Goods", new { id = Model.Id}, null) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

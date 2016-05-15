@@ -7,7 +7,7 @@ using Npgsql;
 
 namespace WorkWithDB.DAL.PostgreSQL.Infrastructure
 {
-    internal class NpgsqlParameters : Dictionary<string, object>
+    internal class SqlParameters : Dictionary<string, object>
     {
     }
 }

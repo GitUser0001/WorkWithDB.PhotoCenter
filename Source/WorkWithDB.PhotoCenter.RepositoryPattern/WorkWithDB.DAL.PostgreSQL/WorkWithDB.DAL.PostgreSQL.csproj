@@ -15,7 +15,7 @@
     <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <NuGetPackageImportStamp>c24cca98</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>75115524</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,14 +41,16 @@
     <AssemblyOriginatorKeyFile>PhotoCenter.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Mono.Security">
-      <HintPath>..\..\Configs\Mono.Security.dll</HintPath>
+    <Reference Include="Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mono.Security.3.2.3.0\lib\net45\Mono.Security.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Npgsql, Version=2.2.3.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Configs\Npgsql.dll</HintPath>
+    <Reference Include="Npgsql, Version=3.0.7.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Npgsql.3.0.7\lib\net45\Npgsql.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -63,7 +65,29 @@
     <Compile Include="Infrastructure\BaseRepository.cs" />
     <Compile Include="Infrastructure\SqlParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\AvailabilityRepository.cs" />
+    <Compile Include="Repository\CameraRentRepository.cs" />
+    <Compile Include="Repository\CameraRepository.cs" />
+    <Compile Include="Repository\ClientRepository.cs" />
+    <Compile Include="Repository\DeliveryRepository.cs" />
+    <Compile Include="Repository\DeliveryGoodsRepository.cs" />
+    <Compile Include="Repository\DiscountCardRepository.cs" />
+    <Compile Include="Repository\DisplayOfPhotoRepository.cs" />
+    <Compile Include="Repository\FiliyaRepository.cs" />
+    <Compile Include="Repository\FilmTypeRepository.cs" />
     <Compile Include="Repository\GoodsRepository.cs" />
+    <Compile Include="Repository\GoodsSoldRepository.cs" />
+    <Compile Include="Repository\KioskRepository.cs" />
+    <Compile Include="Repository\OrderRepository.cs" />
+    <Compile Include="Repository\PaperFormatRepository.cs" />
+    <Compile Include="Repository\PhotoFormatRepository.cs" />
+    <Compile Include="Repository\PhotographerRepository.cs" />
+    <Compile Include="Repository\PhotoServiceRepository.cs" />
+    <Compile Include="Repository\PrintingRepository.cs" />
+    <Compile Include="Repository\ProviderRepository.cs" />
+    <Compile Include="Repository\ServiceRepository.cs" />
+    <Compile Include="Repository\ServiceTypeRepository.cs" />
+    <Compile Include="Repository\StructuralUnitRepository.cs" />
     <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -87,10 +111,10 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-    <Error Condition="!Exists('..\packages\StyleCop.MSBuild.4.7.50.0\build\StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCop.MSBuild.4.7.50.0\build\StyleCop.MSBuild.Targets'))" />
+    <Error Condition="!Exists('..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets'))" />
     <Error Condition="!Exists('..\packages\StyleCopPlus.MSBuild.4.7.49.5\build\StyleCopPlus.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCopPlus.MSBuild.4.7.49.5\build\StyleCopPlus.MSBuild.props'))" />
   </Target>
-  <Import Project="..\packages\StyleCop.MSBuild.4.7.50.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\packages\StyleCop.MSBuild.4.7.50.0\build\StyleCop.MSBuild.Targets')" />
+  <Import Project="..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

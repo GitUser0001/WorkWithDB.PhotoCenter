@@ -1,0 +1,51 @@
+﻿@model IEnumerable<WorkWithDB.DAL.Entity.Entities.Goods>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MadeIN)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Barcode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CriticalNumber)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MadeIN)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Barcode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cost)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CriticalNumber)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Update", "Goods", new { id = item.Id }, null) |
+            @Html.ActionLink("Details", "Get", "Goods", new { id = item.Id }, null) |
+            @Html.ActionLink("Delete", "Delete", "Goods", new { id = item.Id }, null)
+        </td>
+    </tr>
+}
+
+</table>

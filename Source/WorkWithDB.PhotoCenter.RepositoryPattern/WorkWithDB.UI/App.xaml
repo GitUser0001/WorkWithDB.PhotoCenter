@@ -1,8 +1,161 @@
 ﻿<Application x:Class="WorkWithDB.UI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="app"
+             xmlns:classicTheme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Classic"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style x:Key="placeHolder" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid>
+                            <TextBox Text="{Binding Path=Text,
+                                                RelativeSource={RelativeSource TemplatedParent}, 
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                 x:Name="textSource" 
+                                 Background="Transparent" 
+                                 Foreground="#BC956F"
+                                 Panel.ZIndex="2" />
+                            <TextBox Text="{TemplateBinding Tag}" Background="{TemplateBinding Background}" Panel.ZIndex="1">
+                                <TextBox.Style>
+                                    <Style TargetType="{x:Type TextBox}">
+                                        <Setter Property="Foreground" Value="Transparent"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=Text, Source={x:Reference textSource}}" Value="">
+                                                <Setter Property="Foreground" Value="LightGray"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ButtonFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" SnapsToDevicePixels="true" 
+                                       Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" 
+                                       StrokeThickness="1" StrokeDashArray="1 2" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="MetroButton" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
+            <Setter Property="Background" Value="#EEEEEEEE"/>
+            <Setter Property="Foreground" Value="#BC956F"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="10 5"/>
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Border
+                                x:Name="Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" />
+
+                            <ContentPresenter
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                Margin="{TemplateBinding Padding}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                RecognizesAccessKey="True" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="OpacityMask" Value="#D8888888"/>
+                                <Setter Property="Margin" Value="2 1" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <!--<Setter Property="Background" Value="DimGray"/>-->
+                                <Setter Property="Foreground" Value="#0E5A8D"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="#FF71C5FF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="basicButton" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            <Setter Property="BorderBrush" Value="{x:Static classicTheme:ClassicBorderDecorator.ClassicBorderBrush}" />
+            <Setter Property="BorderThickness" Value="3" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <classicTheme:ClassicBorderDecorator x:Name="ContentContainer" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0" BorderStyle="None" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </classicTheme:ClassicBorderDecorator>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter Property="BorderStyle" TargetName="ContentContainer" Value="RaisedFocused"/>
+                            </Trigger>
+                            <Trigger Property="IsDefaulted" Value="True">
+                                <Setter Property="BorderStyle" TargetName="ContentContainer" Value="RaisedFocused"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="BorderStyle" TargetName="ContentContainer" Value="RaisedPressed"/>
+                            </Trigger>
+                            <Trigger Property="ToggleButton.IsChecked" Value="True">
+                                <Setter Property="BorderStyle" TargetName="ContentContainer" Value="RaisedPressed"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="listBoxPlayer" TargetType="{x:Type ListBox}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <WrapPanel>
+                        </WrapPanel>
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <WrapPanel>
+                            <Border BorderBrush="AliceBlue" BorderThickness="2" Margin="3" CornerRadius="2">
+                                <Grid>
+                                    <Image Height="70" VerticalAlignment="Top" Width="65" Source="{Binding Source}"/>
+                                    <!--<StackPanel Margin="0,145,0.4,-0.4">
+                                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" TextAlignment="Center" FontStyle="Italic" Text="{Binding Author}" VerticalAlignment="Top" Width="65"/>
+                                    </StackPanel>-->
+                                </Grid>
+                            </Border>
+                        </WrapPanel>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        </Style>
+
+
     </Application.Resources>
 </Application>

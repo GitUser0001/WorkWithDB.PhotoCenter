@@ -1,0 +1,28 @@
+﻿@model WebApp.Api.Models.Responces.Result
+
+<div>
+    <h4>Result</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ErrorMessage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ErrorMessage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InfoMessage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InfoMessage)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Show all", "GetAll", "Goods") |
+    @Html.ActionLink("Back to List", "Index")
+</p>

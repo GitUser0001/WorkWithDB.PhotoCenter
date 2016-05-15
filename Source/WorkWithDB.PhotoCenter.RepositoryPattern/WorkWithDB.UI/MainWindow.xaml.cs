@@ -24,5 +24,10 @@ namespace WorkWithDB.UI
         {
             InitializeComponent();
         }
+
+        private void ButtonClose(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }
