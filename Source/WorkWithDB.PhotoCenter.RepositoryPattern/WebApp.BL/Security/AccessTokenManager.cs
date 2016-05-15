@@ -39,11 +39,6 @@ namespace WebApp.BL.Security
         //потокобезопасная коллекция
         private readonly ConcurrentDictionary<Guid, UserDescriptorHolder> _tokensCache = new ConcurrentDictionary<Guid, UserDescriptorHolder>();
 
-        public AccessTokenManager()
-        {
-            _tokensCache[new Guid("3502685fb74941bab7becc633ae22ca9")] = new UserDescriptorHolder(new UserDescriptor(33,"test"));
-        }
-
         public string GenerateToken(int userId, string nick)
         {
             var token = Guid.NewGuid();
