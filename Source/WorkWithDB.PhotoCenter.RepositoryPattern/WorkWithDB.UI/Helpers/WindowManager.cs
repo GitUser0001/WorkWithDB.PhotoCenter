@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using WorkWithDB.UI.ViewModel;
 using WorkWithDB.UI.Views.Customers;
+using WorkWithDB.UI.Views.Settings;
 using WorkWithDB.UI.Views.StructuralUnits;
 using WorkWithDB.UI.Views.StructuralUnits.CurrentUnitSetter;
 
@@ -20,8 +21,17 @@ namespace WorkWithDB.UI.Helpers
             {"CustomerRegister", CustomerRegister},
             {"PersonalCardRegister", PersonalCardRegister},
             {"StructuralUnitList", StructuralUnitList},
-            {"StructureUnitEditor", StructureUnitEditor}
+            {"StructureUnitEditor", StructureUnitEditor},
+            {"Settings", Settings }
         };
+
+        private static SettingsEditor Settings
+        {
+            get
+            {
+                return new SettingsEditor();
+            }
+        }
 
         private static CustomerRegister CustomerRegister
         {

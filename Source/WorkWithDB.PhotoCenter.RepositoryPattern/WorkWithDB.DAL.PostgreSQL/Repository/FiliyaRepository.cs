@@ -13,8 +13,6 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
 {
     internal class FiliyaRepository : BaseRepository<int, Filiya>, IFiliyaRepository
     {
-        private readonly string tabelName = "filiya";
-
         public FiliyaRepository(NpgsqlConnection connection, NpgsqlTransaction transaction)
             : base(connection, transaction)
         {

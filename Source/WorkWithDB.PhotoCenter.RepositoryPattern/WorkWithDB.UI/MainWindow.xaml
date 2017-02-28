@@ -5,7 +5,7 @@
             xmlns:classicTheme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Classic"
          xmlns:VM="clr-namespace:WorkWithDB.UI.ViewModel"
          xmlns:Views="clr-namespace:WorkWithDB.UI.Helpers"
-        Title="MainWindow" Height="592.8" Width="843.2">
+        Title="MainWindow" Height="702.4" Width="1033.6">
 
     <Window.DataContext>
         <VM:MainWindowVM/>
@@ -78,6 +78,18 @@
                         <TextBlock FontSize="14" Margin="10 0 0 0"
                 			VerticalAlignment="Center"
                 			Text="Structural Units" />
+                    </StackPanel>
+                </Button>
+
+                <Button Command="{Binding ChangeMainView}" CommandParameter="Settings" 
+                    Padding="10" Margin="10"
+                    FontWeight="Medium" 
+                    Style="{StaticResource MetroButton}">
+                    <StackPanel Orientation="Horizontal" Margin="-40,0,0,0">
+                        <Image Width="30" Height="30" Source="Media/setting.png"/>
+                        <TextBlock FontSize="14" Margin="10 0 0 0"
+                			VerticalAlignment="Center"
+                			Text="Settings" />
                     </StackPanel>
                 </Button>
 

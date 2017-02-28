@@ -43,11 +43,39 @@ namespace WorkWithDB.DAL.PostgreSQL
 
         public UnitOfWork()
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["Home"].ConnectionString;
+            try
+            {
+                var connectionString = ConfigurationManager.ConnectionStrings["Home"].ConnectionString;
 
-            _connection = new NpgsqlConnection(connectionString);
-            _connection.Open();
-            _transaction = _connection.BeginTransaction(IsolationLevel.ReadCommitted);
+                _connection = new NpgsqlConnection(connectionString);
+                _connection.Open();
+                _transaction = _connection.BeginTransaction(IsolationLevel.ReadCommitted);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }            
+        }
+
+        public UnitOfWork(string ip, string port)
+        {
+            try
+            {
+                if (_connection != null)
+                {
+                    _connection.Close();
+                }
+
+                var connectionString = ConfigurationManager.ConnectionStrings["DbInfo"].ConnectionString;
+                connectionString += string.Format("Server={0};Port={1};", ip, port);
+
+                _connection = new NpgsqlConnection(connectionString);
+                _connection.Open();
+                _transaction = _connection.BeginTransaction(IsolationLevel.ReadCommitted);
+            }
+            catch
+            {                
+            }            
         }
 
         public IAvailabilityRepository AvailabilityRepository

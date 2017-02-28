@@ -107,6 +107,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helpers\Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Helpers\TextValidations\SettingsValidator.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Helpers\WindowManager.cs" />
     <Compile Include="StateHolder.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Helpers\ViewModelBase.cs" />
     <Compile Include="ViewModel\Customers\PersonalCardRegisterVM.cs" />
     <Compile Include="ViewModel\MainWindowVM.cs" />
+    <Compile Include="ViewModel\Settings\SettingsVM.cs" />
     <Compile Include="ViewModel\StructuralUnits\CurrentUnitSetter\StructuralUnitSetterVM.cs" />
     <Compile Include="ViewModel\StructuralUnits\CurrentUnitSetter\StructuralUnitViewerVM.cs" />
     <Compile Include="ViewModel\StructuralUnits\StructuralUnitListVM.cs" />
@@ -123,6 +125,9 @@
     </Compile>
     <Compile Include="Views\Customers\PersonalCardRegister.xaml.cs">
       <DependentUpon>PersonalCardRegister.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\SettingsEditor.xaml.cs">
+      <DependentUpon>SettingsEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StructuralUnits\CurrentUnitSetter\StructuralUnitSetter.xaml.cs">
       <DependentUpon>StructuralUnitSetter.xaml</DependentUpon>
@@ -156,6 +161,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Customers\PersonalCardRegister.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\SettingsEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -251,6 +260,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Media\commerce1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\setting.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

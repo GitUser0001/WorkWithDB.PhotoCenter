@@ -17,6 +17,8 @@ namespace WorkWithDB.DAL.PostgreSQL.Infrastructure
         {
             _connection = connection;
             _transaction = transaction;
+
+            ExecuteNonQuery(@"set search_path to 'BD_LAB'", null);
         }
 
         public Tkey SaveOrUpdate(TEntity entity)
