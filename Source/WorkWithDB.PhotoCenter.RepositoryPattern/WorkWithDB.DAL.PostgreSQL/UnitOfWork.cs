@@ -41,11 +41,18 @@ namespace WorkWithDB.DAL.PostgreSQL
         private IServiceTypeRepository _serviceTypeRepository;
         private IStructuralUnitRepository _structuralUnitRepository;
 
-        public UnitOfWork()
+        public UnitOfWork(string address = null)
         {
             try
             {
-                var connectionString = ConfigurationManager.ConnectionStrings["Home"].ConnectionString;
+                if(_connection != null)
+                {
+                    Dispose();
+                }
+                             
+                
+                var connectionString = address ?? ConfigurationManager.ConnectionStrings["DefaultAddress"].ConnectionString + 
+                                       ConfigurationManager.ConnectionStrings["DbInfo"].ConnectionString;
 
                 _connection = new NpgsqlConnection(connectionString);
                 _connection.Open();
@@ -53,30 +60,12 @@ namespace WorkWithDB.DAL.PostgreSQL
             }
             catch(Exception ex)
             {
-                throw ex;
-            }            
-        }
-
-        public UnitOfWork(string ip, string port)
-        {
-            try
-            {
-                if (_connection != null)
-                {
-                    _connection.Close();
-                }
-
-                var connectionString = ConfigurationManager.ConnectionStrings["DbInfo"].ConnectionString;
-                connectionString += string.Format("Server={0};Port={1};", ip, port);
-
-                _connection = new NpgsqlConnection(connectionString);
-                _connection.Open();
-                _transaction = _connection.BeginTransaction(IsolationLevel.ReadCommitted);
+                _connection = null;
+                _transaction = null;
+                //throw new SystemException(ex.Message, ex);
             }
-            catch
-            {                
-            }            
         }
+     
 
         public IAvailabilityRepository AvailabilityRepository
         {

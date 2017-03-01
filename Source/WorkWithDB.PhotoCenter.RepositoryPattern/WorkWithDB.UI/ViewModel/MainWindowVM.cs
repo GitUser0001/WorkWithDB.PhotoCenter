@@ -14,7 +14,7 @@ namespace WorkWithDB.UI.ViewModel
     {
         private UIElement _mainView;
         private UIElement _secondaryView;
-        private UIElement _infoView = new WorkWithDB.UI.Views.StructuralUnits.CurrentUnitSetter.StructuralUnitViewer();
+        private UIElement _infoView = new WorkWithDB.UI.Views.StructuralUnits.CurrentUnitSetter.StructuralUnitSetter();
 
         public MainWindowVM()
         {

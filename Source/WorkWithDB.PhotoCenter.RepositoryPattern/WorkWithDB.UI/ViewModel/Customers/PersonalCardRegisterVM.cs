@@ -101,11 +101,19 @@ namespace WorkWithDB.UI.ViewModel.Customers
 
             StateHolder.RegistratingClient.DiscountCard = discountCard;
 
-            using (var unitOfWork = UnitOfWorkFactory.CreateInstance())
+
+            try
             {
-                unitOfWork.DiscountCardRepository.Save(discountCard);
-                unitOfWork.ClientRepository.Save(StateHolder.RegistratingClient);
-                unitOfWork.Commit();                
+                using (var unitOfWork = UnitOfWorkFactory.CreateInstance())
+                {
+                    unitOfWork.DiscountCardRepository.Save(discountCard);
+                    unitOfWork.ClientRepository.Save(StateHolder.RegistratingClient);
+                    unitOfWork.Commit();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(ex.Message, ex);
             }
 
             StateHolder.RegistratingClient = null;

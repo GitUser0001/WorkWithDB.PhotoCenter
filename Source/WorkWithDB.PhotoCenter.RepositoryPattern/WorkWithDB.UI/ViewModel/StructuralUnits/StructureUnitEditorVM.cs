@@ -125,31 +125,38 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits
                 OwnerInfo = OwnerInfo
             };
 
-            using (var unitOfWork = UnitOfWorkFactory.CreateInstance())
+            try
             {
-                unitOfWork.StructuralUnitRepository.Save(strucutreUnit);
-
-                if (IsFiliya)
+                using (var unitOfWork = UnitOfWorkFactory.CreateInstance())
                 {
-                    Model.Filiya filiya = new Model.Filiya()
+                    unitOfWork.StructuralUnitRepository.Save(strucutreUnit);
+
+                    if (IsFiliya)
                     {
-                        StructureUnit = strucutreUnit
-                    };
+                        Model.Filiya filiya = new Model.Filiya()
+                        {
+                            StructureUnit = strucutreUnit
+                        };
 
-                    unitOfWork.FiliyaRepository.Save(filiya);
-                }
-                else
-                {
-                    Model.Kiosk kiosk = new Model.Kiosk()
+                        unitOfWork.FiliyaRepository.Save(filiya);
+                    }
+                    else
                     {
-                        Filiya = unitOfWork.FiliyaRepository.GetByID(FiliyaId),
-                        StructureUnit = strucutreUnit
-                    };
+                        Model.Kiosk kiosk = new Model.Kiosk()
+                        {
+                            Filiya = unitOfWork.FiliyaRepository.GetByID(FiliyaId),
+                            StructureUnit = strucutreUnit
+                        };
 
-                    unitOfWork.KioskRepository.Save(kiosk);
+                        unitOfWork.KioskRepository.Save(kiosk);
+                    }
+
+                    unitOfWork.Commit();
                 }
-
-                unitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(ex.Message, ex);
             }
 
             WindowManager.ChangeMainView(parameter as string);

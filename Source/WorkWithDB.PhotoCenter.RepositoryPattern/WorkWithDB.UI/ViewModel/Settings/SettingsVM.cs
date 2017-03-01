@@ -59,13 +59,13 @@ namespace WorkWithDB.UI.ViewModel.Settings
         {
             try
             {
-                UnitOfWorkFactory.__Initialize(() => new UnitOfWork(Ip, Port));
+                string address = string.Format("Server={0};Port={1};", Ip, Port);
+                UnitOfWorkFactory.__Initialize(() => new UnitOfWork(address));
             }
             catch (Exception ex)
             {
-                throw new TimeoutException(ex.Message);
-            }
-            
+                throw new TimeoutException(ex.Message, ex);
+            }            
         }
 
         public bool CanExecuteSaveSettingsCommand(object parameter)

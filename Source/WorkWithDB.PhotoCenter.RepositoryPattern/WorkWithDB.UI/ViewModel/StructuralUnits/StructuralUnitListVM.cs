@@ -20,10 +20,17 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits
             {
                 if (_structuralUnitList == null)
 	            {
-		            using (var scope = UnitOfWorkFactory.CreateInstance())
+                    try
                     {
-                        _structuralUnitList = new ObservableCollection<Model.StructuralUnit>(scope.StructuralUnitRepository.GetAll());
-                    }  
+                        using (var scope = UnitOfWorkFactory.CreateInstance())
+                        {
+                            _structuralUnitList = new ObservableCollection<Model.StructuralUnit>(scope.StructuralUnitRepository.GetAll());
+                        }
+
+                    }
+                    catch
+                    {                        
+                    }
                 }
 
                 return _structuralUnitList;	            

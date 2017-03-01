@@ -52,9 +52,15 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits.CurrentUnitSetter
                 return false;
             }
 
-            using (var unitOfWork = UnitOfWorkFactory.CreateInstance())
+            try
             {
-                _structuralUnit = unitOfWork.StructuralUnitRepository.GetByID(Id);
+                using (var unitOfWork = UnitOfWorkFactory.CreateInstance())
+                {
+                    _structuralUnit = unitOfWork.StructuralUnitRepository.GetByID(Id);
+                }
+            }
+            catch
+            {
             }
 
             return _structuralUnit != null;
