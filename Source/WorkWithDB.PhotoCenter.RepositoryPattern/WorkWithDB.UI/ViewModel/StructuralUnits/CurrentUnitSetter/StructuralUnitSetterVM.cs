@@ -52,16 +52,16 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits.CurrentUnitSetter
                 return false;
             }
 
-            try
-            {
-                using (var unitOfWork = UnitOfWorkFactory.CreateInstance())
-                {
-                    _structuralUnit = unitOfWork.StructuralUnitRepository.GetByID(Id);
-                }
-            }
-            catch
-            {
-            }
+            //try
+            //{
+            //    using (var unitOfWork = UnitOfWorkFactory.CreateInstance())
+            //    {
+            //        _structuralUnit = unitOfWork.StructuralUnitRepository.GetByID(Id);
+            //    }
+            //}
+            //catch
+            //{                
+            //}
 
             return _structuralUnit != null;
         }

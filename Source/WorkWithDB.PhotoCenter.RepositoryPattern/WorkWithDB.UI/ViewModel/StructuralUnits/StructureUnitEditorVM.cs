@@ -154,9 +154,8 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits
                     unitOfWork.Commit();
                 }
             }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException(ex.Message, ex);
+            catch (Exception)
+            {                
             }
 
             WindowManager.ChangeMainView(parameter as string);
@@ -171,13 +170,21 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits
             }
             else
             {
-                using (var unitOfWork = UnitOfWorkFactory.CreateInstance())
-                {
-                    var filiya = unitOfWork.FiliyaRepository.GetByID(FiliyaId);
-                    
-                    return filiya != null && !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Address) &&
-                            Workers > 0 && !string.IsNullOrWhiteSpace(OwnerInfo);
-                }                
+                //try
+                //{
+                //    using (var unitOfWork = UnitOfWorkFactory.CreateInstance())
+                //    {
+                //        var filiya = unitOfWork.FiliyaRepository.GetByID(FiliyaId);
+
+                //        return filiya != null && !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Address) &&
+                //                Workers > 0 && !string.IsNullOrWhiteSpace(OwnerInfo);
+                //    }
+                //}
+                //catch (Exception)
+                //{
+                //    return false;
+                //}
+                return false;
             }
         }
     }

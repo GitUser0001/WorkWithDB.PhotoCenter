@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using WorkWithDB.UI.Helpers;
 
@@ -14,10 +8,11 @@ namespace WorkWithDB.UI.ViewModel
     {
         private UIElement _mainView;
         private UIElement _secondaryView;
-        private UIElement _infoView = new WorkWithDB.UI.Views.StructuralUnits.CurrentUnitSetter.StructuralUnitSetter();
+        private UIElement _infoView;
 
         public MainWindowVM()
         {
+            _infoView = new Views.StructuralUnits.CurrentUnitSetter.StructuralUnitSetter();
             WindowManager.SetMainViewModel(this);
         }
 

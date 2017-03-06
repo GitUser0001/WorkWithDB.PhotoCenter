@@ -18,7 +18,16 @@ namespace WorkWithDB.UI
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            UnitOfWorkFactory.__Initialize(() => new UnitOfWork());
+            try
+            {
+                UnitOfWorkFactory.__Initialize(() => new UnitOfWork());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                throw;
+            }
+            
         }
     }
 }

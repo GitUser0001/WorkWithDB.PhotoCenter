@@ -111,9 +111,8 @@ namespace WorkWithDB.UI.ViewModel.Customers
                     unitOfWork.Commit();
                 }
             }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException(ex.Message, ex);
+            catch (Exception)
+            {                
             }
 
             StateHolder.RegistratingClient = null;

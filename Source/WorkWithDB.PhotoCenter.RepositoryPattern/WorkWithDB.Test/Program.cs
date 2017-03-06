@@ -18,24 +18,35 @@ namespace WorkWithDB.Test
             UnitOfWorkFactory.__Initialize(() => new UnitOfWork());
 
             Console.WriteLine("Connecting...");
-            Console.WriteLine(ConfigurationManager.ConnectionStrings["Home"].ConnectionString);
-            using (IUnitOfWork scope = UnitOfWorkFactory.CreateInstance())
+            Console.WriteLine(ConfigurationManager.ConnectionStrings["DefaultAddress"].ConnectionString);
+
+            try
             {
-                Console.WriteLine("Connected");
-
-                Goods goods = new Goods()
+                using (IUnitOfWork scope = UnitOfWorkFactory.CreateInstance())
                 {
-                    Barcode = 1323,
-                    Cost = 2,
-                    CriticalNumber = 2,
-                    MadeIN = "AAAAAA",
-                    Name = "sssssss"
-                };
+                    Console.WriteLine("Connected");
 
-                int a = scope.GoodsRepository.GetCount();
-                scope.Commit();
-                Console.WriteLine("res = " + a.ToString());                
+                    Goods goods = new Goods()
+                    {
+                        Barcode = 1323,
+                        Cost = 2,
+                        CriticalNumber = 2,
+                        MadeIN = "AAAAAA",
+                        Name = "sssssss"
+                    };
+
+                    int a = scope.GoodsRepository.GetCount();
+                    scope.Commit();
+                    Console.WriteLine("res = " + a.ToString());
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Oops, " + ex.Message);
+                throw;
+            }
+
+            
 
             Console.ReadLine();
         }

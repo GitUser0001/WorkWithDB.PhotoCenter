@@ -22,14 +22,14 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits
 	            {
                     try
                     {
-                        using (var scope = UnitOfWorkFactory.CreateInstance())
-                        {
-                            _structuralUnitList = new ObservableCollection<Model.StructuralUnit>(scope.StructuralUnitRepository.GetAll());
-                        }
-
+                        //using (var scope = UnitOfWorkFactory.CreateInstance())
+                        //{
+                      //    //_structuralUnitList = new ObservableCollection<Model.StructuralUnit>(scope.StructuralUnitRepository.GetAll());
+                        //}
                     }
-                    catch
-                    {                        
+                    catch(Exception)
+                    {
+                        return null;
                     }
                 }
 

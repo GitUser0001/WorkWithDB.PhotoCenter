@@ -43,27 +43,12 @@ namespace WorkWithDB.DAL.PostgreSQL
 
         public UnitOfWork(string address = null)
         {
-            try
-            {
-                if(_connection != null)
-                {
-                    Dispose();
-                }
-                             
-                
-                var connectionString = address ?? ConfigurationManager.ConnectionStrings["DefaultAddress"].ConnectionString + 
+            var connectionString = address ?? ConfigurationManager.ConnectionStrings["DefaultAddress"].ConnectionString + 
                                        ConfigurationManager.ConnectionStrings["DbInfo"].ConnectionString;
 
-                _connection = new NpgsqlConnection(connectionString);
-                _connection.Open();
-                _transaction = _connection.BeginTransaction(IsolationLevel.ReadCommitted);
-            }
-            catch(Exception ex)
-            {
-                _connection = null;
-                _transaction = null;
-                //throw new SystemException(ex.Message, ex);
-            }
+            _connection = new NpgsqlConnection(connectionString);
+            _connection.Open();
+            _transaction = _connection.BeginTransaction(IsolationLevel.ReadCommitted);
         }
      
 
