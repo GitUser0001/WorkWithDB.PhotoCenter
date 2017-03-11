@@ -18,16 +18,8 @@ namespace WorkWithDB.UI
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            try
-            {
-                UnitOfWorkFactory.__Initialize(() => new UnitOfWork());
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                throw;
-            }
             
+            UnitOfWorkFactory.__Initialize(() => new UnitOfWork());
         }
     }
 }

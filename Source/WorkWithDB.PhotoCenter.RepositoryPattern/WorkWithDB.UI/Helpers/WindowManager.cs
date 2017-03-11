@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using WorkWithDB.UI.ViewModel;
 using WorkWithDB.UI.Views.Customers;
 using WorkWithDB.UI.Views.Settings;
@@ -16,55 +17,22 @@ namespace WorkWithDB.UI.Helpers
     {
         private static MainWindowVM _mainWindowViewModel;
 
-        private static Dictionary<string, UIElement> _viewsDictionary = new Dictionary<string, UIElement>() 
+
+
+        private static Dictionary<string, UserControl> _viewsCashedDictionary = new Dictionary<string, UserControl>()
         {
-            {"CustomerRegister", CustomerRegister},
-            {"PersonalCardRegister", PersonalCardRegister},
-            {"StructuralUnitList", StructuralUnitList},
-            {"StructureUnitEditor", StructureUnitEditor},
-            {"Settings", Settings }
+            {"CustomerRegister", new CustomerRegister()},
+            {"PersonalCardRegister", new PersonalCardRegister()},        
+            {"StructureUnitEditor", new StructureUnitEditor()},
+            {"Settings", new SettingsEditor()}
         };
 
-        private static SettingsEditor Settings
-        {
-            get
-            {
-                return new SettingsEditor();
-            }
-        }
 
-        private static CustomerRegister CustomerRegister
+        private static Dictionary<string, Func<UserControl>> _viewsDictionary = new Dictionary<string, Func<UserControl>>() 
         {
-            get
-            {
-                return new CustomerRegister();
-            }
-        }
-
-        private static PersonalCardRegister PersonalCardRegister
-        {
-            get
-            {
-                return new PersonalCardRegister();
-            }
-        }
-
-        private static StructuralUnitList StructuralUnitList
-        {
-            get
-            {
-                return new StructuralUnitList();
-            }
-        }
-
-        private static StructureUnitEditor StructureUnitEditor
-        {
-            get
-            {
-                return new StructureUnitEditor();
-            }
-        }
-
+            {"StructuralUnitList", () => new StructuralUnitList()}
+        };
+              
         public static void SetMainViewModel(MainWindowVM viewModel)
         {
             _mainWindowViewModel = viewModel;
@@ -72,18 +40,28 @@ namespace WorkWithDB.UI.Helpers
 
         public static void ChangeInfoView(string viewName)
         {
-            if (IsLegalOperation(viewName))
-            {
-                _mainWindowViewModel.InfoVeiew = _viewsDictionary[viewName];
-            }            
+            _mainWindowViewModel.InfoVeiew = ChangeView(viewName);
         }
 
         public static void ChangeMainView(string viewName)
         {
-            if(IsLegalOperation(viewName))
+            _mainWindowViewModel.MainView = ChangeView(viewName);            
+        }
+
+        private static UIElement ChangeView(string viewName)
+        {
+            if (IsLegalOperation(viewName))
             {
-                _mainWindowViewModel.MainView = _viewsDictionary[viewName];  
-            }                 
+                if (_viewsDictionary.Keys.Contains(viewName))
+                {
+                    return _viewsDictionary[viewName].Invoke();
+                }
+                else
+                {
+                    return _viewsCashedDictionary[viewName];
+                }                
+            }
+            return null;
         }
 
         private static bool IsLegalOperation(string viewName)
@@ -93,7 +71,7 @@ namespace WorkWithDB.UI.Helpers
                 throw new InvalidOperationException("main window view model = null");
             }
 
-            if (!_viewsDictionary.Keys.Contains(viewName))
+            if (!_viewsDictionary.Keys.Contains(viewName) && !_viewsCashedDictionary.Keys.Contains(viewName))
             {
                 throw new InvalidOperationException("no such view");
             }

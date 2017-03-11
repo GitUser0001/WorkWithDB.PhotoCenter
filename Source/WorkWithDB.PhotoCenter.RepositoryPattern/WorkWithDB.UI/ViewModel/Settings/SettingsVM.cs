@@ -64,8 +64,8 @@ namespace WorkWithDB.UI.ViewModel.Settings
             }
             catch (Exception ex)
             {
-                throw new TimeoutException(ex.Message, ex);
-            }            
+                System.Windows.MessageBox.Show(ex.Message);
+            }
         }
 
         public bool CanExecuteSaveSettingsCommand(object parameter)

@@ -12,7 +12,7 @@ namespace WorkWithDB.UI.ViewModel
 
         public MainWindowVM()
         {
-            _infoView = new Views.StructuralUnits.CurrentUnitSetter.StructuralUnitSetter();
+            _infoView = new Views.StructuralUnits.CurrentUnitSetter.StructuralUnitViewer();
             WindowManager.SetMainViewModel(this);
         }
 

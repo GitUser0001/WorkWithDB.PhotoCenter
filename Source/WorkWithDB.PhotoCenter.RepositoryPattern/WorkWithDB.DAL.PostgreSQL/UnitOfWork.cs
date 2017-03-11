@@ -43,8 +43,8 @@ namespace WorkWithDB.DAL.PostgreSQL
 
         public UnitOfWork(string address = null)
         {
-            var connectionString = address ?? ConfigurationManager.ConnectionStrings["DefaultAddress"].ConnectionString + 
-                                       ConfigurationManager.ConnectionStrings["DbInfo"].ConnectionString;
+            var connectionAddress = address ?? ConfigurationManager.ConnectionStrings["DefaultAddress"].ConnectionString;
+            var connectionString = connectionAddress + ConfigurationManager.ConnectionStrings["DbInfo"].ConnectionString;
 
             _connection = new NpgsqlConnection(connectionString);
             _connection.Open();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WorkWithDB.DAL.Abstract;
@@ -19,18 +20,8 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits
             get
             {
                 if (_structuralUnitList == null)
-	            {
-                    try
-                    {
-                        //using (var scope = UnitOfWorkFactory.CreateInstance())
-                        //{
-                      //    //_structuralUnitList = new ObservableCollection<Model.StructuralUnit>(scope.StructuralUnitRepository.GetAll());
-                        //}
-                    }
-                    catch(Exception)
-                    {
-                        return null;
-                    }
+                {
+                    new Thread(new ThreadStart(GetStructuralUnitList)).Start();
                 }
 
                 return _structuralUnitList;	            
@@ -40,7 +31,7 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits
                 _structuralUnitList = value;
                 OnPropertyChanged();
             }
-        }
+        }        
 
         private Model.StructuralUnit _selectedStUnit;
         public Model.StructuralUnit SelectedStUnit
@@ -70,6 +61,20 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits
         public void ExecuteAddStructuralUnitCommand(object parameter)
         {
             WindowManager.ChangeMainView(parameter as string);
+        }
+
+        private void GetStructuralUnitList()
+        {
+            try
+            {
+                using (var scope = UnitOfWorkFactory.CreateInstance())
+                {
+                    StructuralUnitList = new ObservableCollection<Model.StructuralUnit>(scope.StructuralUnitRepository.GetAll());
+                }
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }

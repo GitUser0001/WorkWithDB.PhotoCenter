@@ -142,20 +142,30 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits
                     }
                     else
                     {
-                        Model.Kiosk kiosk = new Model.Kiosk()
-                        {
-                            Filiya = unitOfWork.FiliyaRepository.GetByID(FiliyaId),
-                            StructureUnit = strucutreUnit
-                        };
+                        var filiya = unitOfWork.FiliyaRepository.GetByID(FiliyaId);
 
-                        unitOfWork.KioskRepository.Save(kiosk);
+                        if (filiya != null)
+                        {
+                            Model.Kiosk kiosk = new Model.Kiosk()
+                            {
+                                Filiya = filiya,
+                                StructureUnit = strucutreUnit
+                            };
+
+                            unitOfWork.KioskRepository.Save(kiosk);
+                        }
+                        else
+                        {
+                            throw new ArgumentException("No filia with id : " + FiliyaId);
+                        }
                     }
 
                     unitOfWork.Commit();
                 }
             }
-            catch (Exception)
-            {                
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
             }
 
             WindowManager.ChangeMainView(parameter as string);
@@ -170,21 +180,8 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits
             }
             else
             {
-                //try
-                //{
-                //    using (var unitOfWork = UnitOfWorkFactory.CreateInstance())
-                //    {
-                //        var filiya = unitOfWork.FiliyaRepository.GetByID(FiliyaId);
-
-                //        return filiya != null && !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Address) &&
-                //                Workers > 0 && !string.IsNullOrWhiteSpace(OwnerInfo);
-                //    }
-                //}
-                //catch (Exception)
-                //{
-                //    return false;
-                //}
-                return false;
+                return !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Address) &&
+                                Workers > 0 && !string.IsNullOrWhiteSpace(OwnerInfo);  
             }
         }
     }

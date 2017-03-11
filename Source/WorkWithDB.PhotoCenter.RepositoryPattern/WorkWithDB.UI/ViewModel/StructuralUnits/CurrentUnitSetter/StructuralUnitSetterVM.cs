@@ -42,7 +42,24 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits.CurrentUnitSetter
 
         public void ExecuteSetStUnitCommand(object parameter)
         {
-            StateHolder.StructuteUnitCurrent = _structuralUnit;            
+            try
+            {
+                using (var unitOfWork = UnitOfWorkFactory.CreateInstance())
+                {
+                    _structuralUnit = unitOfWork.StructuralUnitRepository.GetByID(Id);
+                }
+                
+                if (_structuralUnit == null)
+                {
+                    throw new ArgumentOutOfRangeException("There is no structural unit with id: " + Id + "\nCheck your input");
+                }
+
+                StateHolder.StructuteUnitCurrent = _structuralUnit;
+            }
+            catch(Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }                                   
         }
 
         public bool CanExecuteSetStUnitCommand(object parameter)
@@ -51,19 +68,8 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits.CurrentUnitSetter
             {
                 return false;
             }
-
-            //try
-            //{
-            //    using (var unitOfWork = UnitOfWorkFactory.CreateInstance())
-            //    {
-            //        _structuralUnit = unitOfWork.StructuralUnitRepository.GetByID(Id);
-            //    }
-            //}
-            //catch
-            //{                
-            //}
-
-            return _structuralUnit != null;
+            
+            return _id != 0;
         }
     }
 }
