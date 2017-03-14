@@ -17,8 +17,7 @@ namespace WorkWithDB.UI.Helpers
     {
         private static MainWindowVM _mainWindowViewModel;
 
-
-
+        
         private static Dictionary<string, UserControl> _viewsCashedDictionary = new Dictionary<string, UserControl>()
         {
             {"CustomerRegister", new CustomerRegister()},
