@@ -60,6 +60,7 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits
 
         public void ExecuteAddStructuralUnitCommand(object parameter)
         {
+            StateHolder.StructureUnitEditing = null;
             WindowManager.ChangeMainView(parameter as string);
         }
 
@@ -75,6 +76,51 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits
             catch (Exception)
             {
             }
+        }
+
+        private RelayCommand _editStructuralUnitCommand;
+        public ICommand EditStructuralUnit
+        {
+            get
+            {
+                if (_editStructuralUnitCommand == null)
+                    _editStructuralUnitCommand = new RelayCommand(ExecuteEditStructuralUnitCommand);
+                return _editStructuralUnitCommand;
+            }
+        }
+
+        private void ExecuteEditStructuralUnitCommand(object parameter)
+        {
+            StateHolder.StructureUnitEditing = _selectedStUnit;
+            WindowManager.ChangeMainView(parameter as string);
+        }
+
+        private RelayCommand _deleteStructuralUnit;
+        public ICommand DeleteStructuralUnit
+        {
+            get
+            {
+                if (_deleteStructuralUnit == null)
+                    _deleteStructuralUnit = new RelayCommand(ExecuteDeleteStructuralUnitCommand);
+                return _deleteStructuralUnit;
+            }
+        }
+        
+        private void ExecuteDeleteStructuralUnitCommand(object parameter)
+        {
+            try
+            {
+                using (var unitOfWork = UnitOfWorkFactory.CreateInstance())
+                {
+                    unitOfWork.StructuralUnitRepository.Delete(SelectedStUnit.Id);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }
+
+            WindowManager.ChangeMainView(parameter as string);
         }
     }
 }

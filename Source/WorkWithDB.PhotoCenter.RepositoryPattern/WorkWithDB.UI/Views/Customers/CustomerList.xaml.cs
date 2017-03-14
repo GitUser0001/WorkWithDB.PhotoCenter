@@ -13,16 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WorkWithDB.UI.Views.StructuralUnits
+namespace WorkWithDB.UI.Views.Customers
 {
     /// <summary>
-    /// Interaction logic for StructureUnitEditor.xaml
+    /// Interaction logic for CustomerList.xaml
     /// </summary>
-    public partial class StructureUnitEditor : UserControl
+    public partial class CustomerList : UserControl
     {
-        public StructureUnitEditor()
+        public CustomerList()
         {
             InitializeComponent();
-        }        
+        }
     }
 }

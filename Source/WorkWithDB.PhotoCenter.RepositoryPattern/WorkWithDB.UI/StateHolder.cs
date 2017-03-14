@@ -11,6 +11,6 @@ namespace WorkWithDB.UI
     {
         public static Model.StructuralUnit StructuteUnitCurrent { get; set; }
         public static Model.Client RegistratingClient { get; set; }
-        public static Model.StructuralUnit StructureUnitEditing { get; set; }
+        public static Model.StructuralUnit StructureUnitEditing { get; set; }        
     }
 }

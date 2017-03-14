@@ -12,6 +12,37 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits
 {
     public class StructureUnitEditorVM : ViewModelBase
     {
+        private Model.StructuralUnit existedStUnit;
+
+        public StructureUnitEditorVM()
+        {
+            existedStUnit = StateHolder.StructureUnitEditing;
+            
+            if (existedStUnit != null)
+            {
+                UpdateViewWithExistedObj(existedStUnit);
+            }
+        }
+
+        private void UpdateViewWithExistedObj(Model.StructuralUnit stUnit)
+        {
+            existedStUnit = stUnit;
+            _name = stUnit.Name;
+            _ownerInfo = stUnit.OwnerInfo;
+            _address = stUnit.Adress;
+            _workers = stUnit.Jobs;
+            _isFiliya = true;
+        }
+
+        private void UpdateObjWithViewData(ref Model.StructuralUnit stUnit)
+        {
+            stUnit.Adress = Address;
+            stUnit.Jobs = Workers;
+            stUnit.Name = Name;
+            stUnit.Opening_Date = stUnit.Opening_Date != null ? stUnit.Opening_Date : DateTime.Now;
+            stUnit.OwnerInfo = OwnerInfo;
+        }
+
         private string _name;
         public string Name
         {
@@ -83,8 +114,11 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits
 
             set
             {
-                _isFiliya = value;
-                OnPropertyChanged();
+                if (existedStUnit == null)
+                {
+                    _isFiliya = value;
+                    OnPropertyChanged();
+                }                
             }
         }
 
@@ -114,31 +148,40 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits
             }
         }
 
-        public void ExecuteAddStructuralUnitCommand(object parameter)
+        private void ExecuteAddStructuralUnitCommand(object parameter)
         {
-            Model.StructuralUnit strucutreUnit = new Model.StructuralUnit()
-            {
-                Adress = Address,
-                Jobs = Workers,
-                Name = Name,
-                Opening_Date = DateTime.Now,
-                OwnerInfo = OwnerInfo
-            };
-
+            Model.StructuralUnit strucutraUnit = existedStUnit ?? new Model.StructuralUnit();
+            UpdateObjWithViewData(ref strucutraUnit);            
+             
             try
             {
                 using (var unitOfWork = UnitOfWorkFactory.CreateInstance())
                 {
-                    unitOfWork.StructuralUnitRepository.Save(strucutreUnit);
+                    if (existedStUnit != null)
+                    {
+                        unitOfWork.StructuralUnitRepository.SaveOrUpdate(strucutraUnit);
+                    }
+                    else
+                    {
+                        unitOfWork.StructuralUnitRepository.Save(strucutraUnit);
+                    }
 
                     if (IsFiliya)
                     {
                         Model.Filiya filiya = new Model.Filiya()
                         {
-                            StructureUnit = strucutreUnit
+                            Id = strucutraUnit.Id,
+                            StructureUnit = strucutraUnit
                         };
 
-                        unitOfWork.FiliyaRepository.Save(filiya);
+                        if (existedStUnit != null)
+                        {
+                            unitOfWork.FiliyaRepository.SaveOrUpdate(filiya);
+                        }
+                        else
+                        {
+                            unitOfWork.FiliyaRepository.Save(filiya);
+                        }                        
                     }
                     else
                     {
@@ -149,7 +192,7 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits
                             Model.Kiosk kiosk = new Model.Kiosk()
                             {
                                 Filiya = filiya,
-                                StructureUnit = strucutreUnit
+                                StructureUnit = strucutraUnit
                             };
 
                             unitOfWork.KioskRepository.Save(kiosk);
@@ -166,12 +209,13 @@ namespace WorkWithDB.UI.ViewModel.StructuralUnits
             catch (Exception ex)
             {
                 System.Windows.MessageBox.Show(ex.Message);
+                return;
             }
 
             WindowManager.ChangeMainView(parameter as string);
         }
 
-        public bool CanExecuteAddStructuralUnitCommand(object parameter)
+        private bool CanExecuteAddStructuralUnitCommand(object parameter)
         {
             if (IsFiliya)
             {

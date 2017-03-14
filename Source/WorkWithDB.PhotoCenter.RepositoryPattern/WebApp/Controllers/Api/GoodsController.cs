@@ -35,7 +35,18 @@ namespace WebApp.Controllers.Api
             if (user == null)
                 return Result<IList<Model.Goods>>.Unauthorized;
 
-            return new Result<IList<Model.Goods>>(_goodsRepository.GetAll());
+
+            Result<IList<Model.Goods>> result;
+            try
+            {
+                result = new Result<IList<Model.Goods>>(_goodsRepository.GetAll());
+            }
+            catch (Exception)
+            {
+                result = Result<IList<Model.Goods>>.NotExist;
+            }            
+
+            return result;
         }
 
         [HttpPost]

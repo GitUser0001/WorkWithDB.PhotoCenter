@@ -26,7 +26,11 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Edit"/>
+                            <Button Content="Edit" 
+                                    Command="{Binding Path=DataContext.EditStructuralUnit,
+                                                RelativeSource= {RelativeSource FindAncestor,
+                                                AncestorType={x:Type DataGrid}}}" 
+                                    CommandParameter="StructureUnitEditor"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -34,7 +38,11 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Dell"/>
+                            <Button Content="Dell"
+                                    Command="{Binding Path=DataContext.DeleteStructuralUnit,
+                                                RelativeSource= {RelativeSource FindAncestor,
+                                                AncestorType={x:Type DataGrid}}}" 
+                                    CommandParameter="StructuralUnitList"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

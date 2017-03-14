@@ -22,14 +22,14 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         {
             entity.Id =
                 base.ExecuteScalar<int>(
-                    @"insert into client (registration_date,card_id,full_name,is_professional)
-                    values (@registration_date,@card_id,@full_name,@is_professional) RETURNING id",
+                    @"insert into client (registration_date,card_id,full_name,is_profesional)
+                    values (@registration_date,@card_id,@full_name,@is_profesional) RETURNING id",
                     new SqlParameters                    
                     {
                         {"registration_date", entity.RegistrationDate},                    
                         {"card_id", entity.DiscountCard.Id},                    
                         {"full_name", entity.FullName},    
-                        {"is_professional", entity.IsProfesional},                                   
+                        {"is_profesional", entity.IsProfesional},                                   
                     });
 
             return entity.Id;
@@ -39,7 +39,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         {
             var res = base.ExecuteNonQuery(
             @"update client set registration_date=@registration_date,
-                                card_id=@card_id,full_name=@full_name,is_professional=@is_professional
+                                card_id=@card_id,full_name=@full_name,is_profesional=@is_profesional
                                 WHERE  id=@id",
                 new SqlParameters
                     {
@@ -47,7 +47,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
                         {"registration_date", entity.RegistrationDate},                    
                         {"card_id", entity.DiscountCard.Id},                    
                         {"full_name", entity.FullName},    
-                        {"is_professional", entity.IsProfesional},     
+                        {"is_profesional", entity.IsProfesional},     
                     });
 
             return res > 0;
@@ -99,7 +99,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
                     Id = (int)reader["id"],
                     DiscountCard = unitOfWork.DiscountCardRepository.GetByID((int)reader["card_id"]),
                     FullName = (string)reader["full_name"],
-                    IsProfesional = (bool)reader["is_professional"],
+                    IsProfesional = (bool)reader["is_profesional"],
                     RegistrationDate = (DateTime)reader["registration_date"]
                 };
             }

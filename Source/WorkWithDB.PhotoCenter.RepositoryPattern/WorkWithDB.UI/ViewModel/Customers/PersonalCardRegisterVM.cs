@@ -101,20 +101,24 @@ namespace WorkWithDB.UI.ViewModel.Customers
 
             StateHolder.RegistratingClient.DiscountCard = discountCard;
 
+            int id;
 
             try
             {
                 using (var unitOfWork = UnitOfWorkFactory.CreateInstance())
                 {
                     unitOfWork.DiscountCardRepository.Save(discountCard);
-                    unitOfWork.ClientRepository.Save(StateHolder.RegistratingClient);
+                    id = unitOfWork.ClientRepository.Save(StateHolder.RegistratingClient);
                     unitOfWork.Commit();
                 }
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.Message);        
+                System.Windows.MessageBox.Show(ex.Message);
+                return;   
             }
+
+            System.Windows.MessageBox.Show("Added client " + StateHolder.RegistratingClient.FullName + "\nWith id = " + id);
 
             StateHolder.RegistratingClient = null;
             WindowManager.ChangeMainView(parameter as string);

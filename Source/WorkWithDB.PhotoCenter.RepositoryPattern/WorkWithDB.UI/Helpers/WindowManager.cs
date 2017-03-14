@@ -22,17 +22,18 @@ namespace WorkWithDB.UI.Helpers
         private static Dictionary<string, UserControl> _viewsCashedDictionary = new Dictionary<string, UserControl>()
         {
             {"CustomerRegister", new CustomerRegister()},
-            {"PersonalCardRegister", new PersonalCardRegister()},        
-            {"StructureUnitEditor", new StructureUnitEditor()},
+            {"PersonalCardRegister", new PersonalCardRegister()},
             {"Settings", new SettingsEditor()}
         };
 
 
         private static Dictionary<string, Func<UserControl>> _viewsDictionary = new Dictionary<string, Func<UserControl>>() 
         {
-            {"StructuralUnitList", () => new StructuralUnitList()}
+            {"StructuralUnitList", () => new StructuralUnitList()},
+            {"StructureUnitEditor", () => new StructureUnitEditor()},
+            {"CustomerList", () => new CustomerList()}
         };
-              
+
         public static void SetMainViewModel(MainWindowVM viewModel)
         {
             _mainWindowViewModel = viewModel;

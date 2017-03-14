@@ -22,7 +22,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         {
             entity.Id =
             base.ExecuteScalar<int>(
-                    "insert into filiya (structural_unit_id) values (@stUnitID) RETURNING id",
+                    "insert into filiya (id) values (@stUnitID) RETURNING id",
                     new SqlParameters
                     {
                         {"stUnitID", entity.StructureUnit.Id},                               
@@ -34,7 +34,7 @@ namespace WorkWithDB.DAL.PostgreSQL.Repository
         public override bool Update(Filiya entity)
         {
             var res = base.ExecuteNonQuery(
-            @"update filiya set structural_unit_id=@st_unit_id
+            @"update filiya set id=@st_unit_id
                 WHERE id=@id",
                 new SqlParameters
                     {
