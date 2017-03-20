@@ -188,3 +188,5 @@ GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
 /Source/WorkWithDB.PhotoCenter.RepositoryPattern/packages
+Source/WorkWithDB.PhotoCenter.RepositoryPattern/.vs/config/applicationhost.config
+Source/WorkWithDB.PhotoCenter.RepositoryPattern/.vs/config/applicationhost.config
